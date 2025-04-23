@@ -86,7 +86,7 @@ class MessageConsumerService(
         }
     }
     @RabbitListener(queues = [RabbitMQConfig.QUEUE_EMAIL])
-    fun handleEmail(message: EmailMessage) {
+    fun handleOrderEmailComfirmation(message: EmailMessage) {
         try {
 
 
