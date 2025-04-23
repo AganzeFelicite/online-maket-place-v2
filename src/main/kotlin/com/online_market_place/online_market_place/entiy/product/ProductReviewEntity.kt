@@ -7,10 +7,11 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "reviews")
 data class ProductReviewEntity(
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id: Long? = null,
 
-    var rating: Int, // 1 to 5
+    var rating: Int,
     var comment: String,
     var createdAt: LocalDateTime = LocalDateTime.now(),
 
