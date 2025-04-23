@@ -20,7 +20,7 @@ data class UserEntity(
     var enabled: Boolean = false,
 
     @Enumerated(EnumType.STRING)
-    var role: Set<UserRole> = setOf(UserRole.ROLE_USER),
+    var role: Set<UserRole> = setOf(UserRole.USER),
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.ALL])
     val orders: List<OrderEntity>? = mutableListOf(),
