@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ProductRepository : JpaRepository<ProductEntity, Long> {
-    abstract fun findAllByCategory(category: CategoryEntity?): List<ProductEntity>?
+    // TODO Feedback: Change the parameter to just the categoryId
+    fun findAllByCategory(category: CategoryEntity?): List<ProductEntity>
 }

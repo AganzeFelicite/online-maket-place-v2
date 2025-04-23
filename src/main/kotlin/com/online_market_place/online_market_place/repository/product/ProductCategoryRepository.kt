@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository
 
 @Repository
 interface ProductCategoryRepository : JpaRepository<CategoryEntity, Long> {
-    abstract fun findByName(categoryName: String): CategoryEntity?
+    fun findByName(categoryName: String): CategoryEntity?
 }

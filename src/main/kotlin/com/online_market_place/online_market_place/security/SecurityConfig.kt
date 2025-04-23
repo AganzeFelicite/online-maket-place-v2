@@ -50,6 +50,7 @@ class SecurityConfig {
                         "/actuator/**"
                     ).permitAll()
 
+                    // TODO Feedback: Put the role checking in the controllers themselves or endpoints. Use @PreAuthorize
                     // Products
                     .requestMatchers(HttpMethod.GET, "/api/v2.0/products/**").hasAnyRole("USER", "ADMIN")
                     .requestMatchers("/api/v2.0/products/**").hasRole("ADMIN")
