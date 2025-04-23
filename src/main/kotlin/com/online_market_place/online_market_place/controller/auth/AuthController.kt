@@ -23,9 +23,10 @@ class AuthController(private val authService: AuthService) {
         return ResponseEntity.ok(authService.register(request))
     }
 
-    @GetMapping("/verify")
-    fun verify(@RequestParam email: String): ResponseEntity<String> {
-        return ResponseEntity.ok(authService.verifyEmail(email))
+    @GetMapping("/verify-email")
+    fun verifyEmail(@RequestParam token: String): ResponseEntity<String> {
+        val message = authService.verifyToken(token)
+        return ResponseEntity.ok(message)
     }
 
     @PostMapping("/login")

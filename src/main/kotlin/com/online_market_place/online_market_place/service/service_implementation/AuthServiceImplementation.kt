@@ -80,7 +80,7 @@ class AuthServiceImplementation(
      * @param token
      */
 
-    override fun verifyEmail(token: String): String {
+    override fun verifyToken(token: String): String {
 
         val user = userRepository.findByVerificationToken(token)
             ?: throw InvalidVerificationTokenException("The verification token is invalid or has expired")

@@ -87,7 +87,22 @@ class GlobalExceptionHandler(
         return ResponseEntity(error, HttpStatus.FORBIDDEN)
     }
 
+    @ExceptionHandler(EmailNotSentException::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun handleEmailNotSentException(
+        ex: EmailNotSentException,
+        request: WebRequest
+    ): ResponseEntity<ErrorResponse> {
+        val errorResponse = ErrorResponse(
+            status = HttpStatus.INTERNAL_SERVER_ERROR.value(),
+            message = ex.message,
+            errorCode = ex.errorCode,
+            timestamp = LocalDateTime.now(),
+            path = request.getDescription(false).removePrefix("uri=")
+        )
 
+        return ResponseEntity(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR)
+    }
 
     @ExceptionHandler(ConstraintViolationException::class)  // FIXED: Changed to correct exception type
     @ResponseStatus(HttpStatus.BAD_REQUEST)

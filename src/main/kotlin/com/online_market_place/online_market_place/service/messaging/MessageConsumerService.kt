@@ -4,6 +4,7 @@ import com.online_market_place.online_market_place.config.messaging.RabbitMQConf
 import com.online_market_place.online_market_place.dto.messages.EmailMessage
 import com.online_market_place.online_market_place.dto.order.OrderMessage
 import com.online_market_place.online_market_place.entiy.enum_.ProductOrderStatus
+import com.online_market_place.online_market_place.exception.EmailNotSentException
 import com.online_market_place.online_market_place.exception.ResourceNotFoundException
 import com.online_market_place.online_market_place.repository.product.ProductOrderRepository
 import com.online_market_place.online_market_place.repository.product.ProductRepository
@@ -11,16 +12,19 @@ import com.online_market_place.online_market_place.service.service_interface.Ema
 import jakarta.transaction.Transactional
 import lombok.extern.slf4j.Slf4j
 import org.springframework.amqp.rabbit.annotation.RabbitListener
+import org.springframework.mail.SimpleMailMessage
+import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 import kotlin.math.log
 
 @Service
-@Slf4j
 class MessageConsumerService(
     private val orderRepository: ProductOrderRepository,
     private val productRepository: ProductRepository,
-    private val messageProducerService: MessageProducerService
+    private val messageProducerService: MessageProducerService,
+    private val mailSender: JavaMailSender,
 ) {
+
 
     @Transactional
     @RabbitListener(queues = [RabbitMQConfig.QUEUE_ORDERS])
@@ -79,6 +83,23 @@ class MessageConsumerService(
                     body = "An error occurred while processing your order (ID: ${message.orderId})."
                 )
             )
+        }
+    }
+    @RabbitListener(queues = [RabbitMQConfig.QUEUE_EMAIL])
+    fun handleEmail(message: EmailMessage) {
+        try {
+
+
+            val mailMessage = SimpleMailMessage()
+            mailMessage.setTo(message.to)
+            mailMessage.setSubject(message.subject)
+            mailMessage.setText(message.body)
+
+            mailSender.send(mailMessage)
+
+
+        } catch (e: Exception) {
+               throw EmailNotSentException("Failed to send email: ${e.message}")
         }
     }
 }
