@@ -28,5 +28,5 @@ data class UserRegisterRequest(
     val password: String,
 
     @field:NotEmpty(message = "At least one role is required")
-    val role: Set<UserRole> = setOf(UserRole.ROLE_USER)
+    val role: Set<UserRole> = setOf(UserRole.USER)
 )

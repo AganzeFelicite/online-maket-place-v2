@@ -3,6 +3,7 @@ package com.online_market_place.online_market_place.security
 import JwtAuthenticationFilter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
@@ -45,13 +46,22 @@ class SecurityConfig {
                         "/swagger-resources/**",
                         "/webjars/**",
                         "/api/v2.0/users/verify/**",
-                        "/api/v2.0/categories/**",
-                        "/api/v2.0/products/**",
-                        "/api/v2.0/orders/**",
                         "/api/v2.0/users/register/**",
-                        "/api/v2.0/reviews/**",
                         "/actuator/**"
                     ).permitAll()
+
+                    // Products
+                    .requestMatchers(HttpMethod.GET, "/api/v2.0/products/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/api/v2.0/products/**").hasRole("ADMIN")
+
+                    // Categories
+                    .requestMatchers(HttpMethod.GET, "/api/v2.0/categories/**").hasAnyRole("USER", "ADMIN")
+
+                    // Reviews
+                    .requestMatchers(HttpMethod.GET, "/api/v2.0/reviews/**").hasAnyRole("USER", "ADMIN")
+                    .requestMatchers("/api/v2.0/reviews/**").hasRole("USER")
+
+                    // All other endpoints
                     .anyRequest().authenticated()
             }
             .sessionManagement { session ->
@@ -64,4 +74,5 @@ class SecurityConfig {
 
         return http.build()
     }
+
 }

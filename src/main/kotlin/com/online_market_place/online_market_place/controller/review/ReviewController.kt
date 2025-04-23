@@ -3,6 +3,8 @@ import com.online_market_place.online_market_place.dto.review.CreateReviewReques
 import com.online_market_place.online_market_place.dto.review.ReviewResponse
 import com.online_market_place.online_market_place.dto.review.UpdateReviewRequest
 import com.online_market_place.online_market_place.service.service_interface.ReviewService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -10,32 +12,38 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v2.0/reviews")
+@SecurityRequirement(name = "bearerAuth")
 class ReviewController(
     private val reviewService: ReviewService
 ) {
 
     @GetMapping
+    @Operation(summary = "Get all reviews")
     fun getAllReviews(): ResponseEntity<List<ReviewResponse>> {
         return ResponseEntity.ok(reviewService.getAllReviews())
     }
 
     @GetMapping("/{id}")
+    @Operation(summary = "Get review by ID")
     fun getReviewById(@PathVariable id: Long): ResponseEntity<ReviewResponse> {
         return ResponseEntity.ok(reviewService.getReviewById(id))
     }
 
     @PostMapping
+    @Operation(summary = "Create a new review")
     fun createReview(@Valid @RequestBody reviewRequest: CreateReviewRequest): ResponseEntity<ReviewResponse> {
         val createdReview = reviewService.createReview(reviewRequest)
         return ResponseEntity.status(HttpStatus.CREATED).body(createdReview)
     }
 
     @PutMapping
+    @Operation(summary = "Update review")
     fun updateReview(@Valid @RequestBody updateRequest: UpdateReviewRequest): ResponseEntity<ReviewResponse> {
         return ResponseEntity.ok(reviewService.updateReview(updateRequest))
     }
 
     @DeleteMapping("/{id}")
+    @Operation(summary = "Delete review", security = [SecurityRequirement(name = "bearerAuth")])
     fun deleteReview(@PathVariable id: Long): ResponseEntity<String> {
         val message = reviewService.deleteReview(id)
         return ResponseEntity.ok(message)

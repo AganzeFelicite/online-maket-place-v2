@@ -9,7 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 
 interface AuthService{
     fun register(request: UserRegisterRequest): String
-    fun verifyEmail(email: String): String
+    fun verifyToken(token: String): String
     fun login(request: LoginRequest): AuthResponse
 
 }
