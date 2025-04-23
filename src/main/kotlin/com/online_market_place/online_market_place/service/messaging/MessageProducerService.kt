@@ -27,7 +27,7 @@ class MessageProducerService(private val rabbitTemplate: RabbitTemplate) {
 
     fun sendEmailMessage(message: EmailMessage) {
         rabbitTemplate.convertAndSend(
-            RabbitMQConfig.QUEUE_EMAIL,
+            RabbitMQConfig.EXCHANGE_ORDERS,
             RabbitMQConfig.ROUTING_KEY_EMAIL,
             message
 
