@@ -47,6 +47,7 @@ class OrderController(
         return ResponseEntity.ok(updatedOrder)
     }
 
+    // TODO: Move this to user controller (because it is for getting one user's orders)
     @GetMapping("/user/{userId}")
     @Operation(summary = "Get orders by user ID")
     fun getOrdersByUserId(@PathVariable userId: Long): ResponseEntity<List<OrderResponse>> {
@@ -54,6 +55,7 @@ class OrderController(
         return ResponseEntity.ok(orders)
     }
 
+    // TODO: Move this to product controller (because it is for getting one product's orders)
     @GetMapping("/product/{productId}")
     @Operation(summary = "Get orders by product ID")
     fun getOrdersByProductId(@PathVariable productId: Long): ResponseEntity<List<OrderResponse>> {

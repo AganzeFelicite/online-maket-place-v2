@@ -8,15 +8,13 @@ import com.online_market_place.online_market_place.exception.EmailNotSentExcepti
 import com.online_market_place.online_market_place.exception.ResourceNotFoundException
 import com.online_market_place.online_market_place.repository.product.ProductOrderRepository
 import com.online_market_place.online_market_place.repository.product.ProductRepository
-import com.online_market_place.online_market_place.service.service_interface.EmailService
 import jakarta.transaction.Transactional
-import lombok.extern.slf4j.Slf4j
 import org.springframework.amqp.rabbit.annotation.RabbitListener
 import org.springframework.mail.SimpleMailMessage
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
-import kotlin.math.log
 
+// TODO Feedback: Create an interface for this
 @Service
 class MessageConsumerService(
     private val orderRepository: ProductOrderRepository,

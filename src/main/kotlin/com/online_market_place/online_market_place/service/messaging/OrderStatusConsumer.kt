@@ -10,9 +10,9 @@ class OrderStatusConsumer (
     private val messageProducerService: MessageProducerService
 )
 {
-
     @RabbitListener(queues = [RabbitMQConfig.QUEUE_ORDER_STATUS])
     fun handleOrderStatusUpdate(message: OrderMessage) {
+        // TODO Feedback: use the KotlinLogger to log instead of println
         println("Order status update received:")
         println("Order ID: ${message.orderId}")
         println("Status: ${message.status}")

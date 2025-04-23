@@ -6,6 +6,7 @@ import com.online_market_place.online_market_place.dto.order.OrderMessage
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.stereotype.Service
 
+// TODO Feedback: Create an interface for this
 @Service
 class MessageProducerService(private val rabbitTemplate: RabbitTemplate) {
 
