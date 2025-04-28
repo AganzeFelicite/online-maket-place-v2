@@ -54,8 +54,9 @@ class SecurityConfig {
                         "/webjars/**",
                         "/api/v2.0/users/verify/**",
                         "/api/v2.0/users/register/**",
-                        "/actuator/**"
-                    ).permitAll()
+                        "/actuator/**",
+
+                        ).permitAll()
                     .anyRequest().authenticated()
             }
             .sessionManagement { session ->
