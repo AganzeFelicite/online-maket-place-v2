@@ -15,7 +15,7 @@ data class NotificationEntity(
     val message: String,
     val recipient: String,
     val type: NotificationType,
-    val read: Boolean = false,
+    val isRead: Boolean = false,
     val createdAt: Long = System.currentTimeMillis()
 )
 

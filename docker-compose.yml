@@ -48,6 +48,8 @@ services:
     container_name: prometheus
     ports:
       - "9090:9090"
+    depends_on:
+      - app
     volumes:
       - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     networks:
@@ -59,6 +61,9 @@ services:
     ports:
       - "3000:3000"
     restart: unless-stopped
+
+    depends_on:
+      - prometheus
     volumes:
       - ./monitoring/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
     networks:
