@@ -50,21 +50,32 @@ dependencies {
 	implementation ("io.micrometer:micrometer-registry-prometheus")
 
 	// mail & DB
-	implementation("org.springframework.boot:spring-boot-starter-mail")
-	implementation("org.postgresql:postgresql:42.7.3")
+    implementation("org.springframework.boot:spring-boot-starter-mail")
+    implementation("org.postgresql:postgresql:42.7.3")
 
-	// Kotlin
-	implementation("org.jetbrains.kotlin:kotlin-reflect")
+    // Kotlin
+    implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-	// Lombok
-	compileOnly("org.projectlombok:lombok")
-	annotationProcessor("org.projectlombok:lombok")
+    // Lombok
+    compileOnly("org.projectlombok:lombok")
+    annotationProcessor("org.projectlombok:lombok")
 
-	// Test
-	testImplementation("org.springframework.boot:spring-boot-starter-test")
-	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-	testImplementation("org.springframework.security:spring-security-test")
-	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+    //Klogger
+    implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
+
+    // Test
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+
+	testImplementation("io.mockk:mockk:1.13.5")
+
+	testImplementation("com.ninja-squad:springmockk:4.0.2")
+    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+    testImplementation("org.springframework.security:spring-security-test")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+    testImplementation("io.mockk:mockk:1.14.0")
+	testImplementation("com.h2database:h2")
 }
 
 
