@@ -1,25 +1,20 @@
 package com.online_market_place.online_market_place.controllerTests
 
-import com.online_market_place.online_market_place.category.dto.CreateCategoryRequest
-import com.online_market_place.online_market_place.category.service.CategoryService
-
-import org.junit.jupiter.api.BeforeEach
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
-import org.springframework.boot.test.context.SpringBootTest
-
 import com.fasterxml.jackson.databind.ObjectMapper
-
+import com.online_market_place.online_market_place.category.dto.CreateCategoryRequest
 import com.online_market_place.online_market_place.category.dto.ProductCategoryRepository
 import com.online_market_place.online_market_place.category.entity.CategoryEntity
-
+import com.online_market_place.online_market_place.category.service.CategoryService
 import com.online_market_place.online_market_place.product.dto.CreateProductRequest
-
 import com.online_market_place.online_market_place.product.dto.UpdateProductRequest
 import com.online_market_place.online_market_place.product.repository.ProductRepository
 import com.online_market_place.online_market_place.product.toProductEntity
 import mu.KotlinLogging
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
+import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
@@ -63,11 +58,13 @@ class ProductControllerIntegrationTest {
     @Test
     @WithMockUser(roles = ["SELLER"])
     fun `should create product and return 201`() {
+        val category = categoryRepository.save(CategoryEntity(name = "Foods"))
+        log.info { "Created category with ID: ${category.id}" }
         val request = CreateProductRequest(
             name = "Test Product",
             description = "Delicious food",
             price = 20.5,
-            categoryId = 1, // this should exist in your test DB
+            categoryId = category.id,
             stockQuantity = 10,
             featured = true,
             imageUrl = null
