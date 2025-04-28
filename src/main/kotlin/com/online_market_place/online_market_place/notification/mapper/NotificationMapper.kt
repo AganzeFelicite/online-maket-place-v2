@@ -10,7 +10,7 @@ fun toNotificationResponse(notification: NotificationEntity): NotificationRespon
         message = notification.message,
         recipient = notification.recipient,
         type = notification.type,
-        read = notification.read,
+        read = notification.isRead,
         createdAt = notification.createdAt
     )
 }

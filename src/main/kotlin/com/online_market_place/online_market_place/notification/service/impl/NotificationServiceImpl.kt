@@ -28,7 +28,7 @@ class NotificationServiceImpl @Autowired constructor(
     }
 
     override fun getUnreadNotifications(recipient: String): List<NotificationResponse> {
-        val notifications = notificationRepository.findByRecipientAndRead(recipient, false)
+        val notifications = notificationRepository.findByRecipientAndIsRead(recipient, false)
         return notifications.map { toNotificationResponse(it) }
     }
 
@@ -36,7 +36,7 @@ class NotificationServiceImpl @Autowired constructor(
         val notification =
             notificationRepository.findById(notificationId)
                 .orElseThrow { ResourceNotFoundException("Notification not found") }
-        val updatedNotification = notification.copy(read = true)
+        val updatedNotification = notification.copy(isRead = true)
         val savedNotification = notificationRepository.save(updatedNotification)
         return toNotificationResponse(savedNotification)
     }
