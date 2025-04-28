@@ -1,0 +1,39 @@
+package com.online_market_place.online_market_place.notification.controller
+
+import com.online_market_place.online_market_place.common.annotation.IsAdminOrSellerOrCustomer
+import com.online_market_place.online_market_place.notification.dto.CreateNotificationRequest
+import com.online_market_place.online_market_place.notification.dto.NotificationResponse
+import com.online_market_place.online_market_place.notification.service.NotificationService
+import io.swagger.v3.oas.annotations.Operation
+import jakarta.validation.Valid
+import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.web.bind.annotation.*
+
+@RestController
+@RequestMapping("/api/v2.0/notifications")
+@Suppress("unused")
+@IsAdminOrSellerOrCustomer
+class NotificationController @Autowired constructor(
+    private val notificationService: NotificationService
+) {
+
+    @PostMapping
+    @Operation(summary = "Create a new notification")
+    fun createNotification(
+        @RequestBody @Valid request: CreateNotificationRequest
+    ): NotificationResponse {
+        return notificationService.createNotification(request)
+    }
+
+    @GetMapping("/unread/{recipient}")
+    @Operation(summary = "Get unread notifications for a recipient")
+    fun getUnreadNotifications(@PathVariable recipient: String): List<NotificationResponse> {
+        return notificationService.getUnreadNotifications(recipient)
+    }
+
+    @PatchMapping("/{notificationId}/read")
+    @Operation(summary = "Mark a notification as read")
+    fun markAsRead(@PathVariable notificationId: Long): NotificationResponse {
+        return notificationService.markAsRead(notificationId)
+    }
+}
