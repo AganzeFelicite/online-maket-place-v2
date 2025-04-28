@@ -1,6 +1,6 @@
 package com.online_market_place.online_market_place.order.dto
 
-import com.online_market_place.online_market_place.product.ProductOrderStatus
+import com.online_market_place.online_market_place.product.enum_.ProductOrderStatus
 import org.jetbrains.annotations.NotNull
 
 class OrderStatusUpdate (

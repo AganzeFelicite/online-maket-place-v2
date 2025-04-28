@@ -1,5 +1,6 @@
 package com.online_market_place.online_market_place.notification.service.impl
 
+import com.online_market_place.online_market_place.common.exception.ResourceNotFoundException
 import com.online_market_place.online_market_place.notification.dto.CreateNotificationRequest
 import com.online_market_place.online_market_place.notification.dto.NotificationResponse
 import com.online_market_place.online_market_place.notification.entity.NotificationEntity
@@ -33,7 +34,8 @@ class NotificationServiceImpl @Autowired constructor(
 
     override fun markAsRead(notificationId: Long): NotificationResponse {
         val notification =
-            notificationRepository.findById(notificationId).orElseThrow { Exception("Notification not found") }
+            notificationRepository.findById(notificationId)
+                .orElseThrow { ResourceNotFoundException("Notification not found") }
         val updatedNotification = notification.copy(read = true)
         val savedNotification = notificationRepository.save(updatedNotification)
         return toNotificationResponse(savedNotification)

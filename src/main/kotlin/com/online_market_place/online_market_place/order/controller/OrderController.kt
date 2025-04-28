@@ -7,7 +7,7 @@ import com.online_market_place.online_market_place.order.dto.OrderResponse
 import com.online_market_place.online_market_place.order.dto.OrderStatusUpdate
 import com.online_market_place.online_market_place.order.dto.OrderUpdateRequest
 import com.online_market_place.online_market_place.order.service.OrderService
-import com.online_market_place.online_market_place.product.ProductOrderStatus
+import com.online_market_place.online_market_place.product.enum_.ProductOrderStatus
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid

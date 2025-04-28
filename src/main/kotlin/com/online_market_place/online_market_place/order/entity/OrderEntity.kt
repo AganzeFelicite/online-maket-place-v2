@@ -1,6 +1,6 @@
 package com.online_market_place.online_market_place.order.entity
 
-import com.online_market_place.online_market_place.product.ProductOrderStatus
+import com.online_market_place.online_market_place.product.enum_.ProductOrderStatus
 import com.online_market_place.online_market_place.user.entity.UserEntity
 import jakarta.persistence.*
 import java.time.LocalDateTime

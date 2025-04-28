@@ -1,4 +1,4 @@
-package com.online_market_place.online_market_place.product
+package com.online_market_place.online_market_place.product.mapper
 
 import com.online_market_place.online_market_place.category.dto.CategoryResponse
 import com.online_market_place.online_market_place.category.entity.CategoryEntity
