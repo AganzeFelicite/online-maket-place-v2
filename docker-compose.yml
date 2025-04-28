@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: aganze/marketplace-api:latest
+    image: my-container:latest
     container_name: marketplace-api
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
@@ -18,7 +18,7 @@ services:
     image: postgres:15
     container_name: postgres-db
     ports:
-      - "5432:5432"
+      - "5433:5432"
     environment:
       - POSTGRES_DB=marketplace
       - POSTGRES_USER=${DATABASE_USERNAME}
