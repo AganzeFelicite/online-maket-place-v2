@@ -7,8 +7,8 @@ import com.online_market_place.online_market_place.category.entity.CategoryEntit
 import com.online_market_place.online_market_place.category.service.CategoryService
 import com.online_market_place.online_market_place.product.dto.CreateProductRequest
 import com.online_market_place.online_market_place.product.dto.UpdateProductRequest
+import com.online_market_place.online_market_place.product.mapper.toProductEntity
 import com.online_market_place.online_market_place.product.repository.ProductRepository
-import com.online_market_place.online_market_place.product.toProductEntity
 import mu.KotlinLogging
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test

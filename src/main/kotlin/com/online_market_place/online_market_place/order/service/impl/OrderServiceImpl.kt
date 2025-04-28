@@ -7,8 +7,8 @@ import com.online_market_place.online_market_place.order.mapper.toEntity
 import com.online_market_place.online_market_place.order.mapper.toOrderResponse
 import com.online_market_place.online_market_place.order.repository.OrderRepository
 import com.online_market_place.online_market_place.order.service.OrderService
-import com.online_market_place.online_market_place.product.ProductOrderStatus
 import com.online_market_place.online_market_place.product.entity.ProductEntity
+import com.online_market_place.online_market_place.product.enum_.ProductOrderStatus
 import com.online_market_place.online_market_place.product.repository.ProductRepository
 import com.online_market_place.online_market_place.user.entity.UserEntity
 import com.online_market_place.online_market_place.user.repository.UserRepository

@@ -3,11 +3,11 @@ package com.online_market_place.online_market_place.order.service.impl
 import com.online_market_place.online_market_place.auth.message.EmailMessage
 import com.online_market_place.online_market_place.common.config.messaging.RabbitMQConfig
 import com.online_market_place.online_market_place.common.exception.ResourceNotFoundException
-import com.online_market_place.online_market_place.notification.EmailNotSentException
+import com.online_market_place.online_market_place.notification.exception.EmailNotSentException
 import com.online_market_place.online_market_place.order.dto.OrderMessage
 import com.online_market_place.online_market_place.order.repository.OrderRepository
 import com.online_market_place.online_market_place.order.service.MessageConsumerService
-import com.online_market_place.online_market_place.product.ProductOrderStatus
+import com.online_market_place.online_market_place.product.enum_.ProductOrderStatus
 import com.online_market_place.online_market_place.product.repository.ProductRepository
 import jakarta.transaction.Transactional
 import org.springframework.amqp.rabbit.annotation.RabbitListener

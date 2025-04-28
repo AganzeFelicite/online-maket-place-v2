@@ -1,4 +1,4 @@
-package com.online_market_place.online_market_place.notification
+package com.online_market_place.online_market_place.notification.exception
 
 import com.online_market_place.online_market_place.common.exception.BaseException
 

@@ -6,7 +6,7 @@ import com.online_market_place.online_market_place.auth.exception.InvalidVerific
 import com.online_market_place.online_market_place.common.exception.model.ErrorResponse
 import com.online_market_place.online_market_place.common.exception.model.FieldValidationError
 import com.online_market_place.online_market_place.common.exception.model.ValidationErrorResponse
-import com.online_market_place.online_market_place.notification.EmailNotSentException
+import com.online_market_place.online_market_place.notification.exception.EmailNotSentException
 import com.online_market_place.online_market_place.order.exception.InsufficientInventoryException
 import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.ConstraintViolationException
