@@ -1,7 +1,7 @@
 package com.online_market_place.online_market_place.order.dto
 
 import com.online_market_place.online_market_place.auth.dto.BaseUserResponse
-import com.online_market_place.online_market_place.product.ProductOrderStatus
+import com.online_market_place.online_market_place.product.enum_.ProductOrderStatus
 import java.time.LocalDateTime
 
 data class OrderResponse(

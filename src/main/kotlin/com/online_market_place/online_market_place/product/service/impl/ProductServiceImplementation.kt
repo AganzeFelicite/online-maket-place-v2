@@ -5,10 +5,10 @@ import com.online_market_place.online_market_place.common.exception.ResourceNotF
 import com.online_market_place.online_market_place.product.dto.CreateProductRequest
 import com.online_market_place.online_market_place.product.dto.ProductResponse
 import com.online_market_place.online_market_place.product.dto.UpdateProductRequest
+import com.online_market_place.online_market_place.product.mapper.toProductEntity
+import com.online_market_place.online_market_place.product.mapper.toProductResponse
 import com.online_market_place.online_market_place.product.repository.ProductRepository
 import com.online_market_place.online_market_place.product.service.ProductService
-import com.online_market_place.online_market_place.product.toProductEntity
-import com.online_market_place.online_market_place.product.toProductResponse
 import org.springframework.stereotype.Service
 
 
