@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: my-container:latest
+    image: online-market-place:latest
     container_name: marketplace-api
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
@@ -19,14 +19,13 @@ services:
     container_name: postgres-db
     ports:
       - "5433:5432"
-    environment:
-      - POSTGRES_DB=marketplace
-      - POSTGRES_USER=${DATABASE_USERNAME}
-      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+    env_file:
+      - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
       - marketplace-network
+
 
   rabbitmq:
     image: rabbitmq:3-management
@@ -36,14 +35,13 @@ services:
       - "${RABBITMQ_STREAM_PORT}:${RABBITMQ_STREAM_PORT}"
       - "15672:15672"
       - "15692:15692"
-    environment:
-      - RABBITMQ_DEFAULT_USER=${RABBITMQ_USERNAME}
-      - RABBITMQ_DEFAULT_PASS=${RABBITMQ_PASSWORD}
-      - RABBITMQ_ENABLE_PROMETHEUS_PLUGIN=true
+    env_file:
+      - .env
     volumes:
       - rabbitmq_data:/var/lib/rabbitmq
     networks:
       - marketplace-network
+
 
   prometheus:
     image: prom/prometheus:v2.44.0
