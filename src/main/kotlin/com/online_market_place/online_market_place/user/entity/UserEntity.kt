@@ -35,12 +35,13 @@ data class UserEntity(
     var tokenExpiryDate: LocalDateTime?,
 
     ){
+    @Suppress("unused")
     @PrePersist
     fun prePersist() {
         createAt = LocalDateTime.now()
         update = LocalDateTime.now()
     }
-
+    @Suppress("unused")
     @PreUpdate
     fun preUpdate() {
         update = LocalDateTime.now()

@@ -1,9 +1,9 @@
 package com.online_market_place.online_market_place.user.controller
 
-import BaseUserResponse
+import com.online_market_place.online_market_place.auth.dto.BaseUserResponse
 import com.online_market_place.online_market_place.common.ApiResponse
 import com.online_market_place.online_market_place.common.annotation.IsAdmin
-import com.online_market_place.online_market_place.common.annotation.IsAdminOrSeller
+
 import com.online_market_place.online_market_place.common.annotation.IsAdminOrSellerOrCustomer
 import com.online_market_place.online_market_place.order.dto.OrderResponse
 import com.online_market_place.online_market_place.user.dto.UserUpdateRequest
@@ -30,25 +30,29 @@ class UserController(
 
 
     @GetMapping("/{id}")
-    @IsAdminOrSeller
+    @IsAdminOrSellerOrCustomer
+    @Operation(summary = "Get user by ID")
     fun getUserById(@PathVariable id: Long): ResponseEntity<BaseUserResponse> {
         return ResponseEntity.ok(userService.getUserById(id))
     }
 
     @PutMapping
     @IsAdminOrSellerOrCustomer
+    @Operation(summary = "Update user")
     fun updateUser(@RequestBody request: UserUpdateRequest): ResponseEntity<BaseUserResponse> {
         return ResponseEntity.ok(userService.updateUser(request))
     }
 
     @GetMapping("/orders")
     @IsAdminOrSellerOrCustomer
+    @Operation(summary = "Get all user orders")
     fun getUserOrders(): ResponseEntity<List<OrderResponse>> {
         return ResponseEntity.ok(userService.getUserOrders())
     }
 
     @GetMapping("/orders/status/{status}")
     @IsAdminOrSellerOrCustomer
+    @Operation(summary = "Get user orders by status")
     fun getUserOrdersByStatus(@PathVariable status: String): ResponseEntity<List<OrderResponse>> {
         return ResponseEntity.ok(userService.getUserOrdersByStatus(status))
     }
@@ -56,12 +60,14 @@ class UserController(
 
     @GetMapping("/{userId}/orders")
     @IsAdminOrSellerOrCustomer
+    @Operation(summary = "Get user orders by user ID")
     fun getUserOrdersByUserId(@PathVariable userId: Long): ResponseEntity<List<OrderResponse>> {
         return ResponseEntity.ok(userService.getUserOrdersByUserId(userId))
     }
 
     @DeleteMapping("/{id}")
     @IsAdmin
+    @Operation(summary = "Delete user")
     fun deleteUser(@PathVariable id: Long): ResponseEntity<ApiResponse> {
         val response = ApiResponse(
             message = userService.deleteUser(id),

@@ -1,3 +1,5 @@
+package com.online_market_place.online_market_place.auth.dto
+
 import com.online_market_place.online_market_place.order.dto.OrderResponse
 import com.online_market_place.online_market_place.review.dto.ReviewResponse
 import com.online_market_place.online_market_place.user.enum_.UserRole

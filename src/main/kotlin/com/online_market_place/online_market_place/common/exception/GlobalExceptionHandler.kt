@@ -7,7 +7,8 @@ import com.online_market_place.online_market_place.common.exception.model.ErrorR
 import com.online_market_place.online_market_place.common.exception.model.FieldValidationError
 import com.online_market_place.online_market_place.common.exception.model.ValidationErrorResponse
 import com.online_market_place.online_market_place.notification.EmailNotSentException
-import com.online_market_place.online_market_place.order.InsufficientInventoryException
+import com.online_market_place.online_market_place.order.exception.InsufficientInventoryException
+import jakarta.servlet.http.HttpServletRequest
 import jakarta.validation.ConstraintViolationException
 import org.springframework.context.MessageSource
 import org.springframework.context.i18n.LocaleContextHolder
@@ -22,6 +23,7 @@ import org.springframework.web.context.request.WebRequest
 import java.time.LocalDateTime
 
 @RestControllerAdvice
+@Suppress("unused")
 class GlobalExceptionHandler(
     private val messageSource: MessageSource
 ) {
@@ -193,6 +195,20 @@ class GlobalExceptionHandler(
         return ResponseEntity(errorResponse, HttpStatus.BAD_REQUEST)
     }
 
+    @ExceptionHandler(org.springframework.security.access.AccessDeniedException::class)
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    fun handleAccessDeniedException(
+        ex: org.springframework.security.access.AccessDeniedException,
+        request: HttpServletRequest
+    ): Map<String, Any> {
+        return mapOf(
+            "status" to HttpStatus.FORBIDDEN.value(),
+            "message" to "Access Denied: You don't have permission to access this resource.",
+            "errorCode" to "FORBIDDEN",
+            "timestamp" to LocalDateTime.now().toString(),
+            "path" to request.requestURI
+        )
+    }
 
 //    @ExceptionHandler(Exception::class)
 //    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)

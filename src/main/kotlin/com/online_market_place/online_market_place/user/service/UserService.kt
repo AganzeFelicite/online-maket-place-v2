@@ -1,6 +1,6 @@
 package com.online_market_place.online_market_place.user.service
 
-import BaseUserResponse
+import com.online_market_place.online_market_place.auth.dto.BaseUserResponse
 import com.online_market_place.online_market_place.order.dto.OrderResponse
 import com.online_market_place.online_market_place.user.dto.UserUpdateRequest
 

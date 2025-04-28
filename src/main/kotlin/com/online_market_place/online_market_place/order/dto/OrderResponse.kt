@@ -1,6 +1,6 @@
 package com.online_market_place.online_market_place.order.dto
 
-import BaseUserResponse
+import com.online_market_place.online_market_place.auth.dto.BaseUserResponse
 import com.online_market_place.online_market_place.product.ProductOrderStatus
 import java.time.LocalDateTime
 

@@ -1,6 +1,5 @@
 package com.online_market_place.online_market_place.common.config.security
 
-import JwtAuthenticationFilter
 import com.online_market_place.online_market_place.auth.service.TokenBlacklistService
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration

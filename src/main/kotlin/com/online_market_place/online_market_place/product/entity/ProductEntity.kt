@@ -26,4 +26,7 @@ data class ProductEntity(
 
     @OneToMany(mappedBy = "product", cascade = [CascadeType.ALL])
     val reviews: List<ReviewEntity> = mutableListOf()
+
+
+
 )

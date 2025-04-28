@@ -12,6 +12,7 @@ import com.online_market_place.online_market_place.product.repository.ProductRep
 import org.springframework.stereotype.Service
 
 @Service
+@Suppress("unused")
 class CategoryServiceImpl(
     private val categoryRepository: ProductCategoryRepository,
     private val productRepository: ProductRepository,
@@ -20,9 +21,7 @@ class CategoryServiceImpl(
     override fun getAllCategories(): List<CategoryResponse> {
         val categories = categoryRepository.findAll()
 
-        if (categories.isEmpty()) {
-            throw ResourceNotFoundException("No categories found")
-        }
+
 
         return categories.map { it.toCategoryResponse() }
     }
@@ -37,7 +36,7 @@ class CategoryServiceImpl(
 
     override fun createCategory(category: CreateCategoryRequest): CategoryResponse {
 
-        // Check for existing category (case insensitive)
+        // Check for existing category (case-insensitive)
         val existingCategory = categoryRepository.findByName(category.name.trim())
         if (existingCategory != null) {
             throw ResourceNotFoundException("Category with name '${category.name}' already exists")
@@ -77,13 +76,7 @@ class CategoryServiceImpl(
         val category = categoryRepository.findById(categoryId)
             .orElseThrow { ResourceNotFoundException("Category with ID $categoryId not found") }
 
-        // Check if the category has any products
-        val products = productRepository.findAllByCategory(category)
-        if (products != null) {
-            if (products.isNotEmpty()) {
-                throw ResourceNotFoundException("Cannot delete category with ID $categoryId because it has associated products")
-            }
-        }
+
 
         categoryRepository.delete(category)
 

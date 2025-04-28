@@ -6,6 +6,7 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 
 @Service
+@Suppress("unused")
 class EmailServiceImpl(
     private val mailSender: JavaMailSender,
 
@@ -13,7 +14,7 @@ class EmailServiceImpl(
     ) : EmailService {
     override fun sendVerificationEmail(email: String, token: String) {
         val message = SimpleMailMessage()
-        val emailVerificationLink: String = "http://localhost:8082/api/v1/auth/verify-email?token=" + token
+        val emailVerificationLink  = "http://localhost:8082/api/v1/auth/verify-email?token=$token"
         message.setTo(email)
         message.subject = "Verify your email, from Online Market Place"
         message.text = (("<p>Hello,</p>"
@@ -24,15 +25,5 @@ class EmailServiceImpl(
 
     }
 
-    override fun sendPasswordResetEmail(email: String, token: String): String {
-        TODO("Not yet implemented")
-    }
 
-    override fun sendEmail(email: String, subject: String, body: String): String {
-        TODO("Not yet implemented")
-    }
-
-    override fun sendEmailWithAttachment(email: String, subject: String, body: String, attachmentPath: String): String {
-        TODO("Not yet implemented")
-    }
 }

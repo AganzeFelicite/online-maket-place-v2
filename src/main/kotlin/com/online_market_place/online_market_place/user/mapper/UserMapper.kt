@@ -1,8 +1,8 @@
 package com.online_market_place.online_market_place.user.mapper
 
-import BaseUserResponse
-import UserDetailedResponse
-import UserResponse
+import com.online_market_place.online_market_place.auth.dto.BaseUserResponse
+import com.online_market_place.online_market_place.auth.dto.UserDetailedResponse
+import com.online_market_place.online_market_place.auth.dto.UserResponse
 import com.online_market_place.online_market_place.order.mapper.toOrderResponse
 import com.online_market_place.online_market_place.review.mapper.toReviewResponse
 import com.online_market_place.online_market_place.user.entity.UserEntity

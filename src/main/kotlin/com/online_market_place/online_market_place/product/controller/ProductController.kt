@@ -1,5 +1,6 @@
 package com.online_market_place.online_market_place.product.controller
 
+import com.online_market_place.online_market_place.common.ApiResponse
 import com.online_market_place.online_market_place.common.annotation.*
 import com.online_market_place.online_market_place.product.dto.CreateProductRequest
 import com.online_market_place.online_market_place.product.dto.ProductResponse
@@ -58,8 +59,12 @@ class ProductController(
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete product")
     @IsAdminOrSeller
-    fun deleteProduct(@PathVariable id: Long): ResponseEntity<String> {
-        val message = productService.deleteProduct(id)
-        return ResponseEntity.ok(message)
+    fun deleteProduct(@PathVariable id: Long): ResponseEntity<ApiResponse> {
+        val apiResponse = ApiResponse(
+            message = productService.deleteProduct(id),
+           success = true
+        )
+
+        return ResponseEntity.ok(apiResponse)
     }
 }

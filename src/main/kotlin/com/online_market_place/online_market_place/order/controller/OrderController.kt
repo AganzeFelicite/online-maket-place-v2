@@ -1,5 +1,6 @@
 package com.online_market_place.online_market_place.order.controller
 
+import com.online_market_place.online_market_place.common.ApiResponse
 import com.online_market_place.online_market_place.common.annotation.IsAdminOrSellerOrCustomer
 import com.online_market_place.online_market_place.order.dto.OrderCreateRequest
 import com.online_market_place.online_market_place.order.dto.OrderResponse
@@ -70,8 +71,12 @@ class OrderController(
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Delete an order")
-    fun deleteOrder(@PathVariable id: Long): ResponseEntity<String> {
-        val result = orderService.deleteOrder(id)
-        return ResponseEntity.ok(result)
+    fun deleteOrder(@PathVariable id: Long): ResponseEntity<ApiResponse> {
+        val apiResponse = ApiResponse(
+            message = "Order with ID $id deleted successfully",
+            success = true
+        )
+
+        return ResponseEntity.ok(apiResponse)
     }
 }

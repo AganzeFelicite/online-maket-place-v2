@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service
 import java.time.Instant
 
 @Service
+@Suppress("unused")
 class TokenBlacklistServiceImpl(private val repository: BlacklistedTokenRepository) : TokenBlacklistService {
     private val logger = KotlinLogging.logger {}
 

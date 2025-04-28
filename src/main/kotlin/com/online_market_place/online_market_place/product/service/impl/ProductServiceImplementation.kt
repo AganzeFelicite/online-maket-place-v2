@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service
 
 
 @Service
+@Suppress("unused")
 class ProductServiceImplementation(
     private val productRepository: ProductRepository,
     private val categoryRepository: ProductCategoryRepository
@@ -40,9 +41,7 @@ class ProductServiceImplementation(
     override fun getAllProducts(): List<ProductResponse> {
         val products = productRepository.findAll()
 
-        if (products.isEmpty()) {
-            throw ResourceNotFoundException("No products found")
-        }
+
 
         return products.map { it.toProductResponse() }
     }

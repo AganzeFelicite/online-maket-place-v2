@@ -1,4 +1,4 @@
-package com.online_market_place.online_market_place.order
+package com.online_market_place.online_market_place.order.exception
 
 import com.online_market_place.online_market_place.common.exception.BaseException
 

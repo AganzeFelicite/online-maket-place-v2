@@ -1,6 +1,6 @@
 package com.online_market_place.online_market_place.user.service.impl
 
-import BaseUserResponse
+import com.online_market_place.online_market_place.auth.dto.BaseUserResponse
 import com.online_market_place.online_market_place.common.exception.ResourceNotFoundException
 import com.online_market_place.online_market_place.order.dto.OrderResponse
 import com.online_market_place.online_market_place.order.mapper.toOrderResponse
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
 @Service
+@Suppress("unused")
 class UserServiceImpl(
     private val userRepository: UserRepository,
     private val passwordEncoder: PasswordEncoder

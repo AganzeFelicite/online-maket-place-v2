@@ -1,6 +1,5 @@
 package com.online_market_place.online_market_place.common.config.messaging
 
-
 import org.springframework.amqp.core.Binding
 import org.springframework.amqp.core.BindingBuilder
 import org.springframework.amqp.core.Queue
@@ -11,9 +10,10 @@ import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
-
 @Configuration
+@Suppress("unused")
 class RabbitMQConfig {
+
     companion object {
         const val QUEUE_ORDERS = "orders-queue"
         const val EXCHANGE_ORDERS = "orders-exchange"
@@ -26,13 +26,13 @@ class RabbitMQConfig {
         const val ROUTING_KEY_EMAIL = "notification.email"
     }
 
-    @Bean
+    @Bean(name = ["ordersQueue"])
     fun ordersQueue(): Queue = Queue(QUEUE_ORDERS, true)
 
-    @Bean
+    @Bean(name = ["orderStatusQueue"])
     fun orderStatusQueue(): Queue = Queue(QUEUE_ORDER_STATUS, true)
 
-    @Bean
+    @Bean(name = ["emailQueue"])
     fun emailQueue(): Queue = Queue(QUEUE_EMAIL, true)
 
     @Bean
@@ -54,9 +54,8 @@ class RabbitMQConfig {
     fun messageConverter(): Jackson2JsonMessageConverter = Jackson2JsonMessageConverter()
 
     @Bean
-    fun amqpTemplate(connectionFactory: ConnectionFactory): RabbitTemplate {
-        val rabbitTemplate = RabbitTemplate(connectionFactory)
-        rabbitTemplate.messageConverter = messageConverter()
-        return rabbitTemplate
-    }
+    fun amqpTemplate(connectionFactory: ConnectionFactory): RabbitTemplate =
+        RabbitTemplate(connectionFactory).apply {
+            messageConverter = messageConverter()
+        }
 }

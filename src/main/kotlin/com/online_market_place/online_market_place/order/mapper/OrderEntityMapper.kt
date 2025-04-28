@@ -2,10 +2,11 @@ package com.online_market_place.online_market_place.order.mapper
 
 import com.online_market_place.online_market_place.order.dto.OrderCreateRequest
 import com.online_market_place.online_market_place.order.dto.OrderItemRequest
+import com.online_market_place.online_market_place.order.dto.OrderItemResponse
 import com.online_market_place.online_market_place.order.dto.OrderResponse
 import com.online_market_place.online_market_place.order.entity.OrderEntity
 import com.online_market_place.online_market_place.order.entity.OrderItemEntity
-import com.online_market_place.online_market_place.order.entity.toOrderItemResponse
+
 import com.online_market_place.online_market_place.product.entity.ProductEntity
 import com.online_market_place.online_market_place.user.entity.UserEntity
 import com.online_market_place.online_market_place.user.mapper.toUserResponse
@@ -47,3 +48,19 @@ fun OrderItemRequest.toEntity(product: ProductEntity): OrderItemEntity {
         order = null
     )
 }
+
+fun OrderItemEntity.toOrderItemResponse(): OrderItemResponse {
+    return OrderItemResponse(
+        id = id,
+        productId = product.id,
+        productName = product.name,
+        quantity = quantity,
+        price = product.price,
+        totalPrice = quantity * product.price,
+        productImageUrl = product.productImageUrl,
+
+
+        )
+}
+
+

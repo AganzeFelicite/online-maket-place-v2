@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component
 
 
 @Component
+@Suppress("unused")
 class JwtAuthenticationEntryPoint : AuthenticationEntryPoint {
 
     override fun commence(

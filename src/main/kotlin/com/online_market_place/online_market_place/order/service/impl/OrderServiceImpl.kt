@@ -6,7 +6,6 @@ import com.online_market_place.online_market_place.order.entity.OrderEntity
 import com.online_market_place.online_market_place.order.mapper.toEntity
 import com.online_market_place.online_market_place.order.mapper.toOrderResponse
 import com.online_market_place.online_market_place.order.repository.OrderRepository
-import com.online_market_place.online_market_place.order.service.MessageProducerService
 import com.online_market_place.online_market_place.order.service.OrderService
 import com.online_market_place.online_market_place.product.ProductOrderStatus
 import com.online_market_place.online_market_place.product.entity.ProductEntity
@@ -19,11 +18,12 @@ import java.math.BigDecimal
 import java.time.LocalDateTime
 
 @Service
+@Suppress("unused")
 class OrderServiceImpl(
     private val orderRepository: OrderRepository,
     private val userRepository: UserRepository,
     private val productRepository: ProductRepository,
-    private val messageProducerService: MessageProducerService
+    private val messageProducerServiceImpl: MessageProducerServiceImpl
 ) : OrderService {
 
     @Transactional
@@ -36,7 +36,7 @@ class OrderServiceImpl(
         val savedOrder = orderRepository.save(orderEntity)
 
         val orderMessage = buildOrderMessage(savedOrder, user, totalAmount)
-        messageProducerService.sendOrderCreatedMessage(orderMessage)
+        messageProducerServiceImpl.sendOrderCreatedMessage(orderMessage)
 
         return savedOrder.toOrderResponse()
     }
@@ -173,7 +173,7 @@ class OrderServiceImpl(
 
 
     override fun getOrdersByProductId(productId: Long): List<OrderResponse> {
-        val product = productRepository.findById(productId)
+      productRepository.findById(productId)
             .orElseThrow { ResourceNotFoundException("Product with ID $productId not found") }
 
         val orders = orderRepository.findAll().filter { order ->
@@ -200,7 +200,7 @@ class OrderServiceImpl(
 
         val productMap = productRepository.findAllById(order.items.map { it.itemId }).associateBy { it.id }
 
-        val updatedItems = order.items.map { item ->
+   order.items.map { item ->
             val product = productMap[item.itemId]
                 ?: throw ResourceNotFoundException("Product with ID ${item.itemId} not found")
 

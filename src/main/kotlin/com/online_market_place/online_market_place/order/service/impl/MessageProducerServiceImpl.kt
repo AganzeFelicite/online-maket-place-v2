@@ -1,16 +1,17 @@
-package com.online_market_place.online_market_place.order.service
+package com.online_market_place.online_market_place.order.service.impl
 
 import com.online_market_place.online_market_place.auth.message.EmailMessage
 import com.online_market_place.online_market_place.common.config.messaging.RabbitMQConfig
 import com.online_market_place.online_market_place.order.dto.OrderMessage
+import com.online_market_place.online_market_place.order.service.MessageProducer
 import org.springframework.amqp.rabbit.core.RabbitTemplate
 import org.springframework.stereotype.Service
 
-// TODO Feedback: Create an interface for this
 @Service
-class MessageProducerService(private val rabbitTemplate: RabbitTemplate) {
+@Suppress("unused")
+class MessageProducerServiceImpl(private val rabbitTemplate: RabbitTemplate) : MessageProducer {
 
-    fun sendOrderCreatedMessage(orderMessage: OrderMessage) {
+    override fun sendOrderCreatedMessage(orderMessage: OrderMessage) {
         rabbitTemplate.convertAndSend(
             RabbitMQConfig.EXCHANGE_ORDERS,
             RabbitMQConfig.ROUTING_KEY_ORDERS,
@@ -18,7 +19,7 @@ class MessageProducerService(private val rabbitTemplate: RabbitTemplate) {
         )
     }
 
-    fun sendOrderStatusUpdateMessage(orderMessage: OrderMessage) {
+    override fun sendOrderStatusUpdateMessage(orderMessage: OrderMessage) {
         rabbitTemplate.convertAndSend(
             RabbitMQConfig.EXCHANGE_ORDERS,
             RabbitMQConfig.ROUTING_KEY_ORDER_STATUS,
@@ -26,7 +27,7 @@ class MessageProducerService(private val rabbitTemplate: RabbitTemplate) {
         )
     }
 
-    fun sendEmailMessage(message: EmailMessage) {
+    override fun sendEmailMessage(message: EmailMessage) {
         rabbitTemplate.convertAndSend(
             RabbitMQConfig.EXCHANGE_ORDERS,
             RabbitMQConfig.ROUTING_KEY_EMAIL,
