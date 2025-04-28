@@ -23,8 +23,12 @@ class AuthController(
 
     @PostMapping("/register")
     @Operation(summary = "Register a new user")
-    fun register(@Valid @RequestBody request: UserRegisterRequest): ResponseEntity<String> {
-        return ResponseEntity.ok(authService.register(request))
+    fun register(@Valid @RequestBody request: UserRegisterRequest): ResponseEntity<ApiResponse> {
+        val response = ApiResponse(
+            success = true,
+            message = authService.register(request),
+        )
+        return ResponseEntity.ok(response)
     }
 
     @GetMapping("/verify-email")
