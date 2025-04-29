@@ -8,5 +8,4 @@ data class UserUpdateRequest(
     val password: String? = null,
     val enabled: Boolean? = null,
     val role: Set<UserRole>? = null,
-
     )
