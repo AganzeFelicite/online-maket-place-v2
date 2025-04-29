@@ -95,6 +95,7 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
+// TODO Make sure we can set this image name manually
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage") {
 	imageName.set("online-market-place:latest")
 }

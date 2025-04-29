@@ -1,33 +1,25 @@
 package com.online_market_place.online_market_place.controllerTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.ninjasquad.springmockk.MockkBean
 import com.online_market_place.online_market_place.auth.dto.LoginRequest
-import com.online_market_place.online_market_place.user.entity.UserEntity
-
-import com.online_market_place.online_market_place.user.repository.UserRepository
 import com.online_market_place.online_market_place.common.config.security.JwtUtil
 import com.online_market_place.online_market_place.common.config.security.SecurityConfig
-import com.online_market_place.online_market_place.notification.service.EmailService
 import com.online_market_place.online_market_place.test_config.TestConfig
+import com.online_market_place.online_market_place.user.entity.UserEntity
 import com.online_market_place.online_market_place.user.enum_.UserRole
-import io.mockk.every
-import io.mockk.just
-import io.mockk.runs
+import com.online_market_place.online_market_place.user.repository.UserRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
 import org.springframework.http.MediaType
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import java.time.LocalDateTime
 
@@ -97,7 +89,9 @@ class AuthControllerIntergrationTest {
             "role" to setOf("CUSTOMER")
         )
 
-        mockMvc.perform(post("/api/v2.0/auth/register")
+        // TODO Extract the result and perform assertions on it
+        mockMvc.perform(
+            post("/api/v2.0/auth/register")
             .contentType(MediaType.APPLICATION_JSON)
             .content(objectMapper.writeValueAsString(registerRequest)))
             .andExpect(status().isOk)

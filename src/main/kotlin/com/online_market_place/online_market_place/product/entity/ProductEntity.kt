@@ -9,8 +9,6 @@ import jakarta.persistence.*
 data class ProductEntity(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long = 0,
-
-
     var name: String,
     var description: String,
     var price: Double,
@@ -28,5 +26,8 @@ data class ProductEntity(
     val reviews: List<ReviewEntity> = mutableListOf()
 
 
-
-)
+) {
+    fun updateStock(quantity: Int) {
+        this.stock -= quantity
+    }
+}

@@ -7,6 +7,7 @@ import com.online_market_place.online_market_place.product.dto.ProductResponse
 import com.online_market_place.online_market_place.review.dto.ReviewResponse
 import com.online_market_place.online_market_place.review.dto.ReviewerResponse
 
+// TODO Use a class with overloaded functions
 fun CategoryEntity.toCategoryResponse(): CategoryResponse {
     return CategoryResponse(
         id = id,

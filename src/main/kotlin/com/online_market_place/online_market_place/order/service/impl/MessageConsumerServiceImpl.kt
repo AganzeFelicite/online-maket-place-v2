@@ -51,7 +51,10 @@ class MessageConsumerServiceImpl(
                     return
                 }
 
-                product.stock -= item.quantity
+                // TODO Send an event that gets handled in the products module
+
+                // TODO Only update entity fields from inside the entities themselves
+                product.updateStock(item.quantity)
                 productRepository.save(product)
             }
 
@@ -89,8 +92,6 @@ class MessageConsumerServiceImpl(
     @RabbitListener(queues = [RabbitMQConfig.QUEUE_EMAIL])
     override fun handleOrderEmailConfirmation(message: EmailMessage) {
         try {
-
-
             val mailMessage = SimpleMailMessage()
             mailMessage.setTo(message.to)
             mailMessage.subject = message.subject
