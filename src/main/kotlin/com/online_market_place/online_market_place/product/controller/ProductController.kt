@@ -1,8 +1,9 @@
 package com.online_market_place.online_market_place.product.controller
 
 import com.online_market_place.online_market_place.common.ApiResponse
-import com.online_market_place.online_market_place.common.annotation.*
-import com.online_market_place.online_market_place.product.dto.CreateProductRequest
+import com.online_market_place.online_market_place.common.annotation.IsAdminOrSeller
+import com.online_market_place.online_market_place.common.annotation.IsAdminOrSellerOrCustomer
+import com.online_market_place.online_market_place.product.dto.CreateProductDTO
 import com.online_market_place.online_market_place.product.dto.ProductResponse
 import com.online_market_place.online_market_place.product.dto.UpdateProductRequest
 import com.online_market_place.online_market_place.product.service.ProductService
@@ -24,7 +25,7 @@ class ProductController(
     @PostMapping
     @Operation(summary = "Create a new product")
     @IsAdminOrSeller
-    fun createProduct(@Valid @RequestBody request: CreateProductRequest): ResponseEntity<ProductResponse> {
+    fun createProduct(@Valid @RequestBody request: CreateProductDTO.Input): ResponseEntity<CreateProductDTO.Output> {
         val createdProduct = productService.createProduct(request)
         return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct)
     }

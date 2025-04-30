@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
 
 @Service
+// TODO remove these suppressions
+@Suppress("unused")
 class NotificationServiceImpl @Autowired constructor(
     private val notificationRepository: NotificationRepository
 ) : NotificationService {
