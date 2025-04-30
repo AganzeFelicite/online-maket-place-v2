@@ -2,7 +2,7 @@ package com.online_market_place.online_market_place.controllerTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.online_market_place.online_market_place.category.dto.CreateCategoryRequest
-import com.online_market_place.online_market_place.category.dto.ProductCategoryRepository
+import com.online_market_place.online_market_place.category.repository.ProductCategoryRepository
 import com.online_market_place.online_market_place.category.entity.CategoryEntity
 import com.online_market_place.online_market_place.category.service.CategoryService
 import com.online_market_place.online_market_place.product.dto.CreateProductRequest

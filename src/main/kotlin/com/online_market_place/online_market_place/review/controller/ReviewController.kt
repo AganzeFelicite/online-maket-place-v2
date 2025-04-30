@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v2.0/reviews")
 @SecurityRequirement(name = "bearerAuth")
-@Suppress("unused")
 class ReviewController(
     private val reviewService: ReviewService
 ) {

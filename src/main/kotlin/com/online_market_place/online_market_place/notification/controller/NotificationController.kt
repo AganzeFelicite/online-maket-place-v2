@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v2.0/notifications")
-@Suppress("unused")
-
 class NotificationController @Autowired constructor(
     private val notificationService: NotificationService
 ) {

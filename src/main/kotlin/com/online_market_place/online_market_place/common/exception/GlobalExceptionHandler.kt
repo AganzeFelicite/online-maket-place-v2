@@ -111,7 +111,7 @@ class GlobalExceptionHandler(
         return ResponseEntity(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR)
     }
 
-    @ExceptionHandler(ConstraintViolationException::class)  // FIXED: Changed to correct exception type
+    @ExceptionHandler(ConstraintViolationException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleConstraintViolationException(
         ex: ConstraintViolationException,
@@ -210,21 +210,6 @@ class GlobalExceptionHandler(
         )
     }
 
-//    @ExceptionHandler(Exception::class)
-//    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//    fun handleGenericException(ex: Exception,  request: WebRequest): ResponseEntity<ErrorResponse> {
-//        val errorResponse = ex.message?.let {
-//            ErrorResponse(
-//                status = HttpStatus.CONFLICT.value(),
-//                message = it,
-//                errorCode = HttpStatus.INTERNAL_SERVER_ERROR.name,
-//                timestamp = LocalDateTime.now(),
-//                path = request.getDescription(false).removePrefix("uri=")
-//            )
-//        }
-//
-//        return ResponseEntity(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR)
-//    }
 
 
     private fun createFieldValidationError(fieldError: FieldError): FieldValidationError {
@@ -240,7 +225,4 @@ class GlobalExceptionHandler(
             rejectedValue = fieldError.rejectedValue
         )
     }
-
-
-
 }

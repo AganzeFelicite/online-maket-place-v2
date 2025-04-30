@@ -1,6 +1,5 @@
 package com.online_market_place.online_market_place.controllerTests
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.online_market_place.online_market_place.category.dto.CreateCategoryRequest
 import com.online_market_place.online_market_place.common.config.security.SecurityConfig
 import com.online_market_place.online_market_place.user.dto.UserUpdateRequest
 import com.online_market_place.online_market_place.user.entity.UserEntity
@@ -21,7 +20,6 @@ import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import java.time.LocalDateTime
 
 
 @ActiveProfiles("test")

@@ -13,7 +13,6 @@ import com.online_market_place.online_market_place.user.repository.UserRepositor
 import org.springframework.stereotype.Service
 
 @Service
-@Suppress("unused")
 class ReviewServiceImpl(
     private val reviewRepository: ReviewRepository,
     private val productRepository: ProductRepository,

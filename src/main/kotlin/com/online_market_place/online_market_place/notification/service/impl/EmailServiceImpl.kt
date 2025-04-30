@@ -6,7 +6,6 @@ import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.stereotype.Service
 
 @Service
-@Suppress("unused")
 class EmailServiceImpl(
     private val mailSender: JavaMailSender,
 

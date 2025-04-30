@@ -1,15 +1,11 @@
 package com.online_market_place.online_market_place.controllerTests
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.online_market_place.online_market_place.category.dto.CategoryResponse
 import com.online_market_place.online_market_place.category.dto.CreateCategoryRequest
-import com.online_market_place.online_market_place.category.dto.ProductCategoryRepository
+import com.online_market_place.online_market_place.category.repository.ProductCategoryRepository
 import com.online_market_place.online_market_place.category.dto.UpdateCategoryRequest
 import com.online_market_place.online_market_place.category.mapper.toEntity
-import com.online_market_place.online_market_place.category.service.CategoryService
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito
-import org.mockito.Mockito.mock
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest

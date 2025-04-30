@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v2.0/categories")
 @SecurityRequirement(name = "bearerAuth")
-@Suppress("unused")
 class CategoryController(
     private val categoryService: CategoryService
 ) {

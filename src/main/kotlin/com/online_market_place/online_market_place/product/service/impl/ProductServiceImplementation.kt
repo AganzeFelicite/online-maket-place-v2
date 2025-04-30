@@ -1,6 +1,6 @@
 package com.online_market_place.online_market_place.product.service.impl
 
-import com.online_market_place.online_market_place.category.dto.ProductCategoryRepository
+import com.online_market_place.online_market_place.category.repository.ProductCategoryRepository
 import com.online_market_place.online_market_place.common.exception.ResourceNotFoundException
 import com.online_market_place.online_market_place.product.dto.CreateProductRequest
 import com.online_market_place.online_market_place.product.dto.ProductResponse
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service
 
 
 @Service
-@Suppress("unused")
 class ProductServiceImplementation(
     private val productRepository: ProductRepository,
     private val categoryRepository: ProductCategoryRepository

@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v2.0/products")
 @SecurityRequirement(name = "bearerAuth")
-@Suppress("unused") // Suppress unused warning for the class since this is a controller class
+
 class ProductController(
     private val productService: ProductService
 ) {

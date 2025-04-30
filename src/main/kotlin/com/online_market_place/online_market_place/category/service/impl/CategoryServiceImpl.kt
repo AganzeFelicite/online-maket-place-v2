@@ -2,7 +2,7 @@ package com.online_market_place.online_market_place.category.service.impl
 
 import com.online_market_place.online_market_place.category.dto.CategoryResponse
 import com.online_market_place.online_market_place.category.dto.CreateCategoryRequest
-import com.online_market_place.online_market_place.category.dto.ProductCategoryRepository
+import com.online_market_place.online_market_place.category.repository.ProductCategoryRepository
 import com.online_market_place.online_market_place.category.dto.UpdateCategoryRequest
 import com.online_market_place.online_market_place.category.mapper.toCategoryResponse
 import com.online_market_place.online_market_place.category.mapper.toEntity
@@ -12,7 +12,6 @@ import com.online_market_place.online_market_place.product.repository.ProductRep
 import org.springframework.stereotype.Service
 
 @Service
-@Suppress("unused")
 class CategoryServiceImpl(
     private val categoryRepository: ProductCategoryRepository,
     private val productRepository: ProductRepository,
