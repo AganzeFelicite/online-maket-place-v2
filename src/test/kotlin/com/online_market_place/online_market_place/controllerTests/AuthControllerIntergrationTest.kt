@@ -1,6 +1,7 @@
 package com.online_market_place.online_market_place.controllerTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.online_market_place.online_market_place.auth.dto.AuthDTO
 import com.online_market_place.online_market_place.common.config.security.JwtUtil
 import com.online_market_place.online_market_place.common.config.security.SecurityConfig
 import com.online_market_place.online_market_place.test_config.TestConfig
@@ -99,7 +100,7 @@ class AuthControllerIntergrationTest {
 
     @Test
     fun `should login user`() {
-        val loginRequest = LoginRequest(
+        val loginRequest = AuthDTO.Input(
             email = email,
             password = password
         )

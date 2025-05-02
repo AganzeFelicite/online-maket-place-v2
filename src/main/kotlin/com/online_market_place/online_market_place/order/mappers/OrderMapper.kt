@@ -8,15 +8,14 @@ import com.online_market_place.online_market_place.order.entities.OrderItemEntit
 
 import com.online_market_place.online_market_place.product.entities.ProductEntity
 import com.online_market_place.online_market_place.user.entities.UserEntity
-import com.online_market_place.online_market_place.user.mappers.toUserResponse
-
+import com.online_market_place.online_market_place.user.mappers.UserMapper
 
 class OrderMapper {
     fun map(order: OrderEntity): OrderCreateDTO.Output {
 
         return OrderCreateDTO.Output(
             id = order.id,
-            user = order.user.toUserResponse(),
+            user = UserMapper().map(order.user, withDetails = false),
             status = order.status,
             createdAt = order.createdAt,
             items = order.items.map { map(it) }

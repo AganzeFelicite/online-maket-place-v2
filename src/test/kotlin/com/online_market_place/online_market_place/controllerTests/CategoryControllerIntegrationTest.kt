@@ -1,8 +1,8 @@
 package com.online_market_place.online_market_place.controllerTests
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.online_market_place.online_market_place.category.dto.CreateCategoryRequest
-import com.online_market_place.online_market_place.category.dto.UpdateCategoryRequest
-import com.online_market_place.online_market_place.category.mappers.toEntity
+import com.online_market_place.online_market_place.category.dto.CreateCategoryDTO
+import com.online_market_place.online_market_place.category.dto.UpdateCategoryDTO
+import com.online_market_place.online_market_place.category.mappers.CategoryMapper
 import com.online_market_place.online_market_place.category.repositories.CategoryRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -50,8 +50,8 @@ class CategoryControllerIntegrationTest {
         @Test
         @WithMockUser(roles = ["ADMIN"])
         fun `should get category by id`() {
-            val createCategoryRequest = CreateCategoryRequest(name = "Electronics")
-            val category = categoryRepository.save(createCategoryRequest.toEntity())
+            val createCategoryRequest = CreateCategoryDTO.Input(name = "Electronics")
+            val category = categoryRepository.save(CategoryMapper().map(createCategoryRequest))
 
             mockMvc.perform(get("/api/v2.0/categories/${category.id}"))
                 .andExpect(status().isOk)
@@ -63,7 +63,7 @@ class CategoryControllerIntegrationTest {
         @Test
         @WithMockUser(roles = ["SELLER"])
         fun `should create new category`() {
-            val createCategoryRequest = CreateCategoryRequest(name = "Electronics")
+            val createCategoryRequest = CreateCategoryDTO.Input(name = "Electronics")
 
             mockMvc.perform(
                 post("/api/v2.0/categories")
@@ -78,9 +78,9 @@ class CategoryControllerIntegrationTest {
         @Test
         @WithMockUser(roles = ["SELLER"])
         fun `should update category`() {
-            val createCategoryRequest = CreateCategoryRequest(name = "Electronics")
-            val category = categoryRepository.save(createCategoryRequest.toEntity())
-            val updateCategoryRequest = UpdateCategoryRequest(id =category.id, name = "Updated Electronics")
+            val createCategoryRequest = CreateCategoryDTO.Input(name = "Electronics")
+            val category = categoryRepository.save(CategoryMapper().map(createCategoryRequest))
+            val updateCategoryRequest = UpdateCategoryDTO.Input(id = category.id, name = "Updated Electronics")
 
             mockMvc.perform(
                 put("/api/v2.0/categories")
@@ -95,8 +95,8 @@ class CategoryControllerIntegrationTest {
         @Test
         @WithMockUser(roles = ["SELLER"])
         fun `should delete category`() {
-            val createCategoryRequest = CreateCategoryRequest(name = "Electronics")
-            val category = categoryRepository.save(createCategoryRequest.toEntity())
+            val createCategoryRequest = CreateCategoryDTO.Input(name = "Electronics")
+            val category = categoryRepository.save(CategoryMapper().map(createCategoryRequest))
 
             mockMvc.perform(delete("/api/v2.0/categories/${category.id}"))
                 .andExpect(status().isOk)

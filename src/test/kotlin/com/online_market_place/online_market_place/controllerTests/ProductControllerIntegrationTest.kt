@@ -1,11 +1,12 @@
 package com.online_market_place.online_market_place.controllerTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.online_market_place.online_market_place.category.dto.CreateCategoryRequest
+import com.online_market_place.online_market_place.category.dto.CreateCategoryDTO
 import com.online_market_place.online_market_place.category.entities.CategoryEntity
 import com.online_market_place.online_market_place.category.repositories.CategoryRepository
 import com.online_market_place.online_market_place.category.services.CategoryService
-import com.online_market_place.online_market_place.product.dto.CreateProductRequest
+import com.online_market_place.online_market_place.product.dto.CreateProductDTO
+
 import com.online_market_place.online_market_place.product.dto.UpdateProductDTO
 import com.online_market_place.online_market_place.product.mappers.toProductEntity
 import com.online_market_place.online_market_place.product.repositories.ProductRepository
@@ -52,7 +53,7 @@ class ProductControllerIntegrationTest {
     fun setup() {
         productRepository.deleteAll()
         categoryRepository.deleteAll()
-        categoryService.createCategory(CreateCategoryRequest(name = "Foods"))
+        categoryService.createCategory(CreateCategoryDTO.Input(name = "Electronics"))
     }
 
     @Test
@@ -60,7 +61,7 @@ class ProductControllerIntegrationTest {
     fun `should create product and return 201`() {
         val category = categoryRepository.save(CategoryEntity(name = "Foods"))
         log.info { "Created category with ID: ${category.id}" }
-        val request = CreateProductRequest(
+        val request = CreateProductDTO.Input(
             name = "Test Product",
             description = "Delicious food",
             price = 20.5,
@@ -94,7 +95,7 @@ class ProductControllerIntegrationTest {
         val category = categoryRepository.save(CategoryEntity(name = "Foods"))
         log.info { "Created category with ID: ${category.id}" }
 
-        val product = CreateProductRequest(
+        val product = CreateProductDTO.Input(
             name = "Test Product",
             description = "A great product",
             price = 20.0,
@@ -102,7 +103,8 @@ class ProductControllerIntegrationTest {
             stockQuantity = 100,
             featured = true
         )
-        val savedProduct = productRepository.save(product.toProductEntity(categoryRepository.findById(product.categoryId).get()))
+        val savedProduct =
+            productRepository.save(product.toProductEntity(categoryRepository.findById(product.categoryId).get()))
         log.info { "Saved product: $savedProduct" }
         mockMvc.perform(get("/api/v2.0/products/${savedProduct.id}")
             .contentType(MediaType.APPLICATION_JSON))
@@ -120,7 +122,7 @@ class ProductControllerIntegrationTest {
         val category = categoryRepository.save(CategoryEntity(name = "Foods"))
         log.info { "Created category with ID: ${category.id}" }
 
-        val product = CreateProductRequest(
+        val product = CreateProductDTO.Input(
             name = "Old Product",
             description = "Old description",
             price = 10.0,
@@ -129,10 +131,11 @@ class ProductControllerIntegrationTest {
             featured = false,
             imageUrl = null
         )
-        val savedProduct = productRepository.save(product.toProductEntity(categoryRepository.findById(product.categoryId).get()))
+        val savedProduct =
+            productRepository.save(product.toProductEntity(categoryRepository.findById(product.categoryId).get()))
 
 
-        val updatedRequest = UpdateProductDTO(
+        val updatedRequest = UpdateProductDTO.Input(
             name = "Updated Product",
             description = "Updated description",
             price = 15.0,
@@ -163,7 +166,7 @@ class ProductControllerIntegrationTest {
         val category = categoryRepository.save(CategoryEntity(name = "Foods"))
         log.info { "Created category with ID: ${category.id}" }
         // Step 1: Create a product to delete
-        val product = CreateProductRequest(
+        val product = CreateProductDTO.Input(
             name = "Product to Delete",
             description = "This product will be deleted",
             price = 10.0,
@@ -172,7 +175,8 @@ class ProductControllerIntegrationTest {
             featured = false,
             imageUrl = null
         )
-        val savedProduct = productRepository.save(product.toProductEntity(categoryRepository.findById(product.categoryId).get()))
+        val savedProduct =
+            productRepository.save(product.toProductEntity(categoryRepository.findById(product.categoryId).get()))
 
         // Step 2: Perform the DELETE request to delete the product
         mockMvc.perform(delete("/api/v2.0/products/${savedProduct.id}")

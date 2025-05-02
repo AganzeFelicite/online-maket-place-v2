@@ -24,9 +24,10 @@ class UserServiceImpl(
         return userRepository.findAll().map { UserMapper().map(it) }
     }
 
-    override fun getUserById(id: Long): UserEntity {
-        return userRepository.findById(id)
+    override fun getUserById(id: Long): BaseUserResponse {
+        val user = userRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("User with id $id not found") }
+        return UserMapper().map(user)
     }
 
     @Transactional

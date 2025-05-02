@@ -8,7 +8,7 @@ import com.online_market_place.online_market_place.common.exceptions.ResourceNot
 import com.online_market_place.online_market_place.notification.services.EmailService
 import com.online_market_place.online_market_place.user.dto.UserCreateDTO
 import com.online_market_place.online_market_place.user.entities.UserEntity
-import com.online_market_place.online_market_place.user.mappers.toUserResponse
+import com.online_market_place.online_market_place.user.mappers.UserMapper
 import com.online_market_place.online_market_place.user.repositories.UserRepository
 import mu.KotlinLogging
 import org.springframework.security.authentication.AuthenticationManager
@@ -55,7 +55,7 @@ class AuthServiceImpl(
         return UserCreateDTO.Output(
             success = true,
             message = "User registered successfully. Please check your email for verification.",
-            data = savedUser.toUserResponse()
+            data = UserMapper().map(savedUser, false)
         )
     }
 
@@ -102,7 +102,7 @@ class AuthServiceImpl(
 
         return AuthDTO.Out(
             token = jwtToken,
-            user = user.toUserResponse()
+            user = UserMapper().map(user, false),
         )
     }
 

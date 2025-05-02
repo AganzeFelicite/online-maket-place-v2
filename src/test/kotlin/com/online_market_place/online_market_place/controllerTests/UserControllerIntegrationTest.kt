@@ -104,7 +104,7 @@ class UserControllerIntegrationTest {
         )
         val newUser = userRepository.save(user)
         val updateRequest = newUser.id.let {
-            UserUpdateDTO(
+            UserUpdateDTO.Input(
                 id = it,
                 username = "updatedUser",
                 password = "NewPassword@123",

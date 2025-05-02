@@ -5,8 +5,7 @@ import com.online_market_place.online_market_place.common.exceptions.ResourceNot
 import com.online_market_place.online_market_place.product.dto.CreateProductDTO
 import com.online_market_place.online_market_place.product.dto.UpdateProductDTO
 import com.online_market_place.online_market_place.product.entities.ProductEntity
-import com.online_market_place.online_market_place.product.mappers.toProductEntity
-import com.online_market_place.online_market_place.product.mappers.toProductResponse
+import com.online_market_place.online_market_place.product.mappers.ProductMapper
 import com.online_market_place.online_market_place.product.repositories.ProductRepository
 import com.online_market_place.online_market_place.product.services.ProductService
 import org.springframework.stereotype.Service
@@ -30,9 +29,9 @@ class ProductServiceImplementation(
             .orElseThrow { ResourceNotFoundException("Category with ID ${productCreationRequest.categoryId} not found") }
 
         return try {
-            val product = productCreationRequest.toProductEntity(category)
+            val product = ProductMapper().map(productCreationRequest, category)
             val savedProduct = productRepository.save(product)
-            savedProduct.toProductResponse()
+            ProductMapper().map(savedProduct)
         } catch (ex: Exception) {
             throw RuntimeException("Failed to create product: ${ex.message}", ex)
         }
@@ -54,14 +53,14 @@ class ProductServiceImplementation(
 
 
 
-        return products.map { it.toProductResponse() }
+        return products.map { ProductMapper().map(it) }
     }
 
     override fun getProductById(id: Long): CreateProductDTO.Output {
         val product = productRepository.findById(id)
             .orElseThrow { ResourceNotFoundException("Product with $id is not Found") }
 
-        return product.toProductResponse()
+        return ProductMapper().map(product)
     }
 
     override fun updateProduct(id: Long, productUpdateRequest: UpdateProductDTO.Input): CreateProductDTO.Output {
@@ -81,7 +80,7 @@ class ProductServiceImplementation(
             category = category
         )
 
-        return productRepository.save(product).toProductResponse()
+        return ProductMapper().map(product)
     }
 
 

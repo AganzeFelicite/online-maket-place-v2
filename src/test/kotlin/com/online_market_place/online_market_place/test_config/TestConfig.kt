@@ -16,23 +16,26 @@ class TestConfig {
                 // Do nothing
             }
 
-          }
+            override fun publishEmailNotificationEvent(message: EmailMessage) {
+
+            }
+
+
+        }
     }
 
     @Bean
     @Primary
     fun messageProducer(): OrderProducer {
         return object : OrderProducer {
-            override fun sendOrderCreatedMessage(orderMessage: OrderMessage) {
-                // Do nothing
+
+
+            override fun publishOrderCreatedEvent(orderMessage: OrderMessage) {
+
             }
 
-            override fun sendOrderStatusUpdateMessage(orderMessage: OrderMessage) {
-                // Do nothing
-            }
+            override fun publishOrderStatusUpdateEvent(orderMessage: OrderMessage) {
 
-            override fun sendEmailMessage(message: EmailMessage) {
-                // Do nothing
             }
         }
     }
