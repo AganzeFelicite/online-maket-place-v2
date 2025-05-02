@@ -34,7 +34,8 @@ class OrderServiceImpl(
 
     @Transactional
     override fun createOrder(order: OrderCreateDTO.Input): OrderCreateDTO.Output {
-        val user = userService.getUserById(order.userId)
+        val user = userRepository.findById(order.userId)
+            .orElseThrow { ResourceNotFoundException("User not found") }
         val products = productService.getValidatedProducts(order.items.map { it.productId })
         val totalAmount = calculateTotalAmount(order.items, products)
 

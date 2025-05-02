@@ -8,7 +8,8 @@ import com.online_market_place.online_market_place.category.services.CategorySer
 import com.online_market_place.online_market_place.product.dto.CreateProductDTO
 
 import com.online_market_place.online_market_place.product.dto.UpdateProductDTO
-import com.online_market_place.online_market_place.product.mappers.toProductEntity
+import com.online_market_place.online_market_place.product.mappers.ProductMapper
+
 import com.online_market_place.online_market_place.product.repositories.ProductRepository
 import mu.KotlinLogging
 import org.junit.jupiter.api.BeforeEach
@@ -104,7 +105,7 @@ class ProductControllerIntegrationTest {
             featured = true
         )
         val savedProduct =
-            productRepository.save(product.toProductEntity(categoryRepository.findById(product.categoryId).get()))
+            productRepository.save(ProductMapper().map(product, categoryRepository.findById(product.categoryId).get()))
         log.info { "Saved product: $savedProduct" }
         mockMvc.perform(get("/api/v2.0/products/${savedProduct.id}")
             .contentType(MediaType.APPLICATION_JSON))
@@ -132,7 +133,7 @@ class ProductControllerIntegrationTest {
             imageUrl = null
         )
         val savedProduct =
-            productRepository.save(product.toProductEntity(categoryRepository.findById(product.categoryId).get()))
+            productRepository.save(ProductMapper().map(product, categoryRepository.findById(product.categoryId).get()))
 
 
         val updatedRequest = UpdateProductDTO.Input(
@@ -176,7 +177,7 @@ class ProductControllerIntegrationTest {
             imageUrl = null
         )
         val savedProduct =
-            productRepository.save(product.toProductEntity(categoryRepository.findById(product.categoryId).get()))
+            productRepository.save(ProductMapper().map(product, categoryRepository.findById(product.categoryId).get()))
 
         // Step 2: Perform the DELETE request to delete the product
         mockMvc.perform(delete("/api/v2.0/products/${savedProduct.id}")
