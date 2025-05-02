@@ -1,9 +1,9 @@
 package com.online_market_place.online_market_place.controllerTests
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.online_market_place.online_market_place.category.dto.CreateCategoryRequest
-import com.online_market_place.online_market_place.category.repository.ProductCategoryRepository
 import com.online_market_place.online_market_place.category.dto.UpdateCategoryRequest
-import com.online_market_place.online_market_place.category.mapper.toEntity
+import com.online_market_place.online_market_place.category.mappers.toEntity
+import com.online_market_place.online_market_place.category.repositories.CategoryRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
@@ -28,7 +28,7 @@ class CategoryControllerIntegrationTest {
     private lateinit var objectMapper: ObjectMapper
 
     @Autowired
-    private lateinit var categoryRepository: ProductCategoryRepository
+    private lateinit var categoryRepository: CategoryRepository
 
     @BeforeEach
     fun setup() {

@@ -1,9 +1,9 @@
 package com.online_market_place.online_market_place.test_config
 
-import com.online_market_place.online_market_place.auth.message.EmailMessage
-import com.online_market_place.online_market_place.notification.service.EmailService
+import com.online_market_place.online_market_place.notification.dto.EmailMessage
+import com.online_market_place.online_market_place.notification.services.EmailService
 import com.online_market_place.online_market_place.order.dto.OrderMessage
-import com.online_market_place.online_market_place.order.service.MessageProducer
+import com.online_market_place.online_market_place.order.services.OrderProducer
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Primary
 
@@ -21,8 +21,8 @@ class TestConfig {
 
     @Bean
     @Primary
-    fun messageProducer(): MessageProducer {
-        return object : MessageProducer {
+    fun messageProducer(): OrderProducer {
+        return object : OrderProducer {
             override fun sendOrderCreatedMessage(orderMessage: OrderMessage) {
                 // Do nothing
             }

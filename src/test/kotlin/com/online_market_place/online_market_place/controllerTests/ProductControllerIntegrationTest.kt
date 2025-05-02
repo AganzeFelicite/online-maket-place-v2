@@ -2,13 +2,13 @@ package com.online_market_place.online_market_place.controllerTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.online_market_place.online_market_place.category.dto.CreateCategoryRequest
-import com.online_market_place.online_market_place.category.repository.ProductCategoryRepository
-import com.online_market_place.online_market_place.category.entity.CategoryEntity
-import com.online_market_place.online_market_place.category.service.CategoryService
+import com.online_market_place.online_market_place.category.entities.CategoryEntity
+import com.online_market_place.online_market_place.category.repositories.CategoryRepository
+import com.online_market_place.online_market_place.category.services.CategoryService
 import com.online_market_place.online_market_place.product.dto.CreateProductRequest
-import com.online_market_place.online_market_place.product.dto.UpdateProductRequest
-import com.online_market_place.online_market_place.product.mapper.toProductEntity
-import com.online_market_place.online_market_place.product.repository.ProductRepository
+import com.online_market_place.online_market_place.product.dto.UpdateProductDTO
+import com.online_market_place.online_market_place.product.mappers.toProductEntity
+import com.online_market_place.online_market_place.product.repositories.ProductRepository
 import mu.KotlinLogging
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -40,7 +40,7 @@ class ProductControllerIntegrationTest {
     private lateinit var categoryService: CategoryService
 
     @Autowired
-    private lateinit var categoryRepository: ProductCategoryRepository
+    private lateinit var categoryRepository: CategoryRepository
 
 
 
@@ -132,8 +132,7 @@ class ProductControllerIntegrationTest {
         val savedProduct = productRepository.save(product.toProductEntity(categoryRepository.findById(product.categoryId).get()))
 
 
-
-        val updatedRequest = UpdateProductRequest(
+        val updatedRequest = UpdateProductDTO(
             name = "Updated Product",
             description = "Updated description",
             price = 15.0,

@@ -1,13 +1,12 @@
 package com.online_market_place.online_market_place.controllerTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.online_market_place.online_market_place.auth.dto.LoginRequest
 import com.online_market_place.online_market_place.common.config.security.JwtUtil
 import com.online_market_place.online_market_place.common.config.security.SecurityConfig
 import com.online_market_place.online_market_place.test_config.TestConfig
-import com.online_market_place.online_market_place.user.entity.UserEntity
-import com.online_market_place.online_market_place.user.enum_.UserRole
-import com.online_market_place.online_market_place.user.repository.UserRepository
+import com.online_market_place.online_market_place.user.entities.UserEntity
+import com.online_market_place.online_market_place.user.enums.UserRole
+import com.online_market_place.online_market_place.user.repositories.UserRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired

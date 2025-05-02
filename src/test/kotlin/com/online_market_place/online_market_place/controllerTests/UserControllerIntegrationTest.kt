@@ -1,11 +1,11 @@
 package com.online_market_place.online_market_place.controllerTests
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.online_market_place.online_market_place.common.config.security.SecurityConfig
-import com.online_market_place.online_market_place.user.dto.UserUpdateRequest
-import com.online_market_place.online_market_place.user.entity.UserEntity
-import com.online_market_place.online_market_place.user.enum_.UserRole
-import com.online_market_place.online_market_place.user.repository.UserRepository
-import com.online_market_place.online_market_place.user.service.UserService
+import com.online_market_place.online_market_place.user.dto.UserUpdateDTO
+import com.online_market_place.online_market_place.user.entities.UserEntity
+import com.online_market_place.online_market_place.user.enums.UserRole
+import com.online_market_place.online_market_place.user.repositories.UserRepository
+import com.online_market_place.online_market_place.user.services.UserService
 import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -19,7 +19,6 @@ import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
 
 
 @ActiveProfiles("test")
@@ -104,8 +103,8 @@ class UserControllerIntegrationTest {
             tokenExpiryDate = null
         )
         val newUser = userRepository.save(user)
-        val updateRequest = newUser.id?.let {
-            UserUpdateRequest(
+        val updateRequest = newUser.id.let {
+            UserUpdateDTO(
                 id = it,
                 username = "updatedUser",
                 password = "NewPassword@123",
