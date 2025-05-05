@@ -69,7 +69,7 @@ git clone https://github.com/AganzeFelicite/online-maket-place-v2.git
 cd online-maket-place-v2/
 ```
 
-### Starting the project
+### Starting the project the usual way 
 After creating a .env file containing all the environment variables
 Run this command to create .jar file
 ```bash
@@ -83,7 +83,19 @@ Now once this command runs successfully start the docker containers
 ```bash
 docker-compose up
 ```
-Once the containers are up and running open the following url in the browser to have a undestanding on api endpoints
+
+
+##Starting the project the easy way lol
+```bash
+   ./complete-rebuild-restart.sh
+```
+Using this approach make sure that the script has the right priviledge ie the scrip should be executable
+```
+   sudo chmod +x complete-rebuild-restart.sh
+```
+
+Once the containers are up and running open the following url in the browser so as to have a undestanding on api endpoints
+
 http://localhost:8083/swagger-ui/index.html
 
 ### Prerequisites
