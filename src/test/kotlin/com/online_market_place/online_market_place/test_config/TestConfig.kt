@@ -12,6 +12,7 @@ import org.testcontainers.containers.RabbitMQContainer
 import org.testcontainers.utility.DockerImageName
 
 @TestConfiguration(proxyBeanMethods = false)
+
 class TestConfig {
     companion object {
         private val postgres = PostgreSQLContainer(DockerImageName.parse("postgres:15")).withReuse(true)

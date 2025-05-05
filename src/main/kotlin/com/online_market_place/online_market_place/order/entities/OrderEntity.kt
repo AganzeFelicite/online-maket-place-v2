@@ -31,30 +31,7 @@ data class OrderEntity(
         this.status = newStatus
     }
 
-    fun updateTotalAmount(newTotalAmount: Double) {
-        this.totalAmount = newTotalAmount
-    }
 
-    fun updateQuantity(orderItem: OrderItemEntity, newQuantity: Int) {
-        val item = items.find { it.id == orderItem.id }
-        item?.let {
-            it.quantity = newQuantity
-        }
-    }
-
-    fun addOrderItem(orderItem: OrderItemEntity) {
-        (items as MutableList).add(orderItem)
-        orderItem.order = this
-    }
-
-    fun removeOrderItem(orderItem: OrderItemEntity) {
-        (items as MutableList).remove(orderItem)
-        orderItem.order = null
-    }
-
-    fun calculateTotalAmount() {
-        totalAmount = items.sumOf { it.price * it.quantity }
-    }
 
     fun confirm() {
         this.status = ProductOrderStatus.CONFIRMED

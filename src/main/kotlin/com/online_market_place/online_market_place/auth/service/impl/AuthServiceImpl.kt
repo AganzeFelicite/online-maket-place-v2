@@ -4,7 +4,6 @@ import com.online_market_place.online_market_place.auth.exception.EmailConflictE
 import com.online_market_place.online_market_place.auth.exception.InvalidVerificationTokenException
 import com.online_market_place.online_market_place.auth.service.AuthService
 import com.online_market_place.online_market_place.common.config.security.JwtUtil
-import com.online_market_place.online_market_place.common.exceptions.ResourceNotFoundException
 import com.online_market_place.online_market_place.notification.services.EmailService
 import com.online_market_place.online_market_place.user.dto.UserCreateDTO
 import com.online_market_place.online_market_place.user.entities.UserEntity

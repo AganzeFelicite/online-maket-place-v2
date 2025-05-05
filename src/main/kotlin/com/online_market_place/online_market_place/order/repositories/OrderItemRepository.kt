@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional
 
 @Repository
 interface OrderItemRepository : JpaRepository<OrderItemEntity, Long> {
-    fun findByOrderId(orderId: Long): List<OrderItemEntity>
+
 
     @Modifying
     @Transactional
