@@ -8,6 +8,9 @@ services:
       - "${SERVER_PORT}:${SERVER_PORT}"
     env_file:
       - .env
+    environment:
+      - SPRINGDOC_USE_FQN=true
+
     depends_on:
       - db
       - rabbitmq

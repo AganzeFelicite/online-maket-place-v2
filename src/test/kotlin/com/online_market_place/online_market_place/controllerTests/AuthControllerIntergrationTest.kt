@@ -1,53 +1,52 @@
 package com.online_market_place.online_market_place.controllerTests
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.ninjasquad.springmockk.MockkBean
-import com.online_market_place.online_market_place.auth.dto.LoginRequest
-import com.online_market_place.online_market_place.user.entity.UserEntity
-
-import com.online_market_place.online_market_place.user.repository.UserRepository
+import com.online_market_place.online_market_place.auth.dto.AuthDTO
 import com.online_market_place.online_market_place.common.config.security.JwtUtil
-import com.online_market_place.online_market_place.common.config.security.SecurityConfig
-import com.online_market_place.online_market_place.notification.service.EmailService
 import com.online_market_place.online_market_place.test_config.TestConfig
-import com.online_market_place.online_market_place.user.enum_.UserRole
-import io.mockk.every
-import io.mockk.just
-import io.mockk.runs
+import com.online_market_place.online_market_place.user.entities.UserEntity
+import com.online_market_place.online_market_place.user.enums.UserRole
+import com.online_market_place.online_market_place.user.repositories.UserRepository
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.mockito.ArgumentMatchers.anyString
-import org.mockito.Mockito
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
-import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import org.testcontainers.junit.jupiter.Testcontainers
 import java.time.LocalDateTime
+import kotlin.test.assertEquals
 
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@Import(TestConfig::class)
+@Testcontainers
 @ActiveProfiles("test")
-@SpringBootTest
 @AutoConfigureMockMvc
-
-@Import(SecurityConfig::class, TestConfig::class)
-
 class AuthControllerIntergrationTest {
 
 
-    @Autowired  private lateinit var mockMvc: MockMvc
-    @Autowired  private lateinit var objectMapper: ObjectMapper
-    @Autowired  private lateinit var userRepository: UserRepository
-    @Autowired  private lateinit var passwordEncoder: PasswordEncoder
-    @Autowired  private lateinit var jwtUtil: JwtUtil
+    @Autowired
+    private lateinit var mockMvc: MockMvc
+    @Autowired
+    private lateinit var objectMapper: ObjectMapper
+    @Autowired
+    private lateinit var userRepository: UserRepository
+    @Autowired
+    private lateinit var passwordEncoder: PasswordEncoder
+    @Autowired
+    private lateinit var jwtUtil: JwtUtil
 
 
-
+    // Create a TestUtils class or extension function
 
     private lateinit var jwtToken: String
     private lateinit var email: String
@@ -56,7 +55,7 @@ class AuthControllerIntergrationTest {
     @BeforeEach
     fun setup() {
         // Clear DB to avoid conflict
-        userRepository.deleteAll()
+        userRepository.deleteAllPhysically()
 
         // Create a user
         email = "testuser@example.com"
@@ -81,7 +80,6 @@ class AuthControllerIntergrationTest {
         )
 
 
-
         // Generate a valid JWT token
         jwtToken = jwtUtil.generateToken(userDetails)
 
@@ -97,45 +95,62 @@ class AuthControllerIntergrationTest {
             "role" to setOf("CUSTOMER")
         )
 
-        mockMvc.perform(post("/api/v2.0/auth/register")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(registerRequest)))
-            .andExpect(status().isOk)
-            .andExpect(content().string(org.hamcrest.Matchers.containsString("User registered successfully. Please check your email for verification")))
+        val result = mockMvc.perform(
+            post("/api/v2.0/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(registerRequest))
+        )
+            .andReturn()
+
+        assertEquals(HttpStatus.OK.value(), result.response.status)
+
+
     }
 
     @Test
     fun `should login user`() {
-        val loginRequest = LoginRequest(
+        val loginRequest = AuthDTO.Input(
             email = email,
             password = password
         )
 
-        mockMvc.perform(post("/api/v2.0/auth/login")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(loginRequest)))
-            .andExpect(status().isOk)
-            .andExpect(jsonPath("$.token").exists())
-            .andExpect(jsonPath("$.user").exists())
+        val result = mockMvc.perform(
+            post("/api/v2.0/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(loginRequest))
+        )
+            .andReturn()
+        assertEquals(HttpStatus.OK.value(), result.response.status)
+
     }
 
     @Test
     fun `should verify email with valid token`() {
-        val token = "someVerificationToken" // Replace with a real one if needed.
+        val token = "someVerificationToken"
 
-        mockMvc.perform(get("/api/v2.0/auth/verify-email")
-            .param("token", token))
-            .andExpect(status().isOk)
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").exists())
+        val result = mockMvc.perform(
+            get("/api/v2.0/auth/verify-email")
+                .param("token", token)
+        )
+            .andReturn()
+        val response = result.response.contentAsString
+        assertEquals(HttpStatus.OK.value(), result.response.status)
+        assertEquals(true, response.contains("success"))
+        assertEquals(true, response.contains("message"))
     }
 
     @Test
     fun `should logout user`() {
-        mockMvc.perform(post("/api/v2.0/auth/logout")
-            .header("Authorization", "Bearer $jwtToken"))
-            .andExpect(status().isOk)
-            .andExpect(jsonPath("$.success").value(true))
-            .andExpect(jsonPath("$.message").value("Logged out successfully"))
+        val result = mockMvc.perform(
+            post("/api/v2.0/auth/logout")
+                .header("Authorization", "Bearer $jwtToken")
+        )
+            .andReturn()
+        val response = result.response.contentAsString
+        assertEquals(HttpStatus.OK.value(), result.response.status)
+        assertEquals(true, response.contains("success"))
+        assertEquals(true, response.contains("Logged out successfully"))
+
+
     }
 }

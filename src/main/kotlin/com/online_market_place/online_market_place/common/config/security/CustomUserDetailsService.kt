@@ -1,6 +1,6 @@
 package com.online_market_place.online_market_place.common.config.security
 
-import com.online_market_place.online_market_place.user.repository.UserRepository
+import com.online_market_place.online_market_place.user.repositories.UserRepository
 import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService

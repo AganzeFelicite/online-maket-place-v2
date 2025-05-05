@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service
 import java.time.Instant
 
 @Service
-@Suppress("unused")
 class TokenBlacklistServiceImpl(private val repository: BlacklistedTokenRepository) : TokenBlacklistService {
     private val logger = KotlinLogging.logger {}
 
@@ -37,8 +36,7 @@ class TokenBlacklistServiceImpl(private val repository: BlacklistedTokenReposito
     }
 
     @Scheduled(fixedRate = 86400000)
-    override // Run once a day
-    fun purgeExpiredTokens() {
+    override fun purgeExpiredTokens() {
         try {
             val count = repository.deleteByExpiryDateBefore(Instant.now())
             logger.info("Purged {} expired tokens from blacklist", count)

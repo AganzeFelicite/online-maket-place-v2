@@ -14,10 +14,10 @@ This project is a comprehensive RESTful API for an online marketplace that enabl
 ### Product Management
 - CRUD operations for products
 - Product categorization
-- Product tagging for improved searchability
+- Product tagging for improved reachability
 - Featured product marking by admins
 
-### Order Processing and Invetory processing
+### Order Processing and Inventory processing
 - Order placement and validation, mail notification Asynchronous order processing using message queuing (RabbitMQ)
 - Order history viewing, previous orders
 - Email notifications for order status updates
@@ -50,7 +50,7 @@ This project is a comprehensive RESTful API for an online marketplace that enabl
 
 The API is fully documented using Swagger. After running the application, you can access the documentation at:
 http://localhost:8080/swagger-ui/index.html
-
+  
 ## Database Schema
 
 The application uses a normalized database structure with the following key entities:
@@ -84,6 +84,7 @@ Now once this command runs successfully start the docker containers
 docker-compose up
 ```
 
+
 ##Starting the project the easy way lol
 ```bash
    ./complete-rebuild-restart.sh
@@ -94,6 +95,7 @@ Using this approach make sure that the script has the right priviledge ie the sc
 ```
 
 Once the containers are up and running open the following url in the browser so as to have a undestanding on api endpoints
+
 http://localhost:8083/swagger-ui/index.html
 
 ### Prerequisites
@@ -126,7 +128,7 @@ The application uses the following environment variables which can be configured
 ### Common Issues
 
 1. Connection refused to database
-   - Ensure PostgreSQL container is running: docker ps
+   - Ensure PostgresSQL container is running: docker ps
    - Check logs: docker-compose logs db
 
 2. JWT authentication issues

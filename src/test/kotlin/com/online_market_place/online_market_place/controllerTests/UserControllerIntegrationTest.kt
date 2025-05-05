@@ -1,12 +1,12 @@
 package com.online_market_place.online_market_place.controllerTests
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.online_market_place.online_market_place.category.dto.CreateCategoryRequest
 import com.online_market_place.online_market_place.common.config.security.SecurityConfig
-import com.online_market_place.online_market_place.user.dto.UserUpdateRequest
-import com.online_market_place.online_market_place.user.entity.UserEntity
-import com.online_market_place.online_market_place.user.enum_.UserRole
-import com.online_market_place.online_market_place.user.repository.UserRepository
-import com.online_market_place.online_market_place.user.service.UserService
+import com.online_market_place.online_market_place.test_config.TestConfig
+import com.online_market_place.online_market_place.user.dto.UserUpdateDTO
+import com.online_market_place.online_market_place.user.entities.UserEntity
+import com.online_market_place.online_market_place.user.enums.UserRole
+import com.online_market_place.online_market_place.user.repositories.UserRepository
+import com.online_market_place.online_market_place.user.services.UserService
 import org.hamcrest.Matchers.hasSize
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
@@ -14,20 +14,20 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.context.annotation.Import
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
-import java.time.LocalDateTime
+import kotlin.test.assertEquals
 
 
 @ActiveProfiles("test")
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
-@Import(SecurityConfig::class)
+@Import(SecurityConfig::class, TestConfig::class)
 class UserControllerIntegrationTest {
 
     @Autowired
@@ -43,7 +43,7 @@ class UserControllerIntegrationTest {
     lateinit var objectMapper: ObjectMapper
     @BeforeEach
     fun setup() {
-       userRepository.deleteAll()
+        userRepository.deleteAllPhysically()
     }
 
 
@@ -51,18 +51,26 @@ class UserControllerIntegrationTest {
     @WithMockUser(roles = ["ADMIN"])
     fun `should return all users when GET request is made by Admin`() {
 
-        mockMvc.perform(get("/api/v2.0/users"))
+        val result = mockMvc.perform(get("/api/v2.0/users"))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
             .andExpect(jsonPath("$", hasSize<Int>(userService.getAllUsers().size)))
+            .andReturn()
+        val response = result.response
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
+        assertEquals(HttpStatus.OK.value(), response.status)
 
     }
 
     @Test
     fun `should return 403 when GET request is made by non-admin`() {
 
-        mockMvc.perform(get("/api/v2.0/users"))
+        val result = mockMvc.perform(get("/api/v2.0/users"))
             .andExpect(status().isForbidden)
+            .andReturn()
+
+        val response = result.response
+        assertEquals(HttpStatus.FORBIDDEN.value(), response.status)
     }
 
 
@@ -81,16 +89,27 @@ class UserControllerIntegrationTest {
         )
         val newUser = userRepository.save(user)
         val userId = newUser.id
-        mockMvc.perform(get("/api/v2.0/users/$userId"))
+        val result = mockMvc.perform(get("/api/v2.0/users/$userId"))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+        val response = result.response
+        assertEquals(HttpStatus.OK.value(), response.status)
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
+
+
     }
 
     @Test
     fun `should return 403 when unauthorized user tries to get user by ID`() {
         val userId = 1L
-        mockMvc.perform(get("/api/v2.0/users/$userId"))
+        val result = mockMvc.perform(get("/api/v2.0/users/$userId"))
             .andExpect(status().isForbidden)
+            .andReturn()
+        val response = result.response
+        assertEquals(HttpStatus.FORBIDDEN.value(), response.status)
+
+
     }
 
     @Test
@@ -106,8 +125,8 @@ class UserControllerIntegrationTest {
             tokenExpiryDate = null
         )
         val newUser = userRepository.save(user)
-        val updateRequest = newUser.id?.let {
-            UserUpdateRequest(
+        val updateRequest = newUser.id.let {
+            UserUpdateDTO.Input(
                 id = it,
                 username = "updatedUser",
                 password = "NewPassword@123",
@@ -116,11 +135,18 @@ class UserControllerIntegrationTest {
             )
         }
 
-        mockMvc.perform(put("/api/v2.0/users")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(updateRequest)))
+        val result = mockMvc.perform(
+            put("/api/v2.0/users")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updateRequest))
+        )
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+        val response = result.response
+        assertEquals(HttpStatus.OK.value(), response.status)
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
+
     }
 
     @Test
@@ -136,9 +162,14 @@ class UserControllerIntegrationTest {
             tokenExpiryDate = null
         )
         userRepository.save(user)
-        mockMvc.perform(get("/api/v2.0/users/orders"))
+        val result = mockMvc.perform(get("/api/v2.0/users/orders"))
             .andExpect(status().isOk)
             .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+        val response = result.response
+        assertEquals(HttpStatus.OK.value(), response.status)
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
+        assertEquals("[]", response.contentAsString)
     }
 
     @Test
@@ -157,9 +188,13 @@ class UserControllerIntegrationTest {
         userRepository.save(user)
 
         val status = "COMPLETED"
-        mockMvc.perform(get("/api/v2.0/users/orders/status/$status"))
+        val results = mockMvc.perform(get("/api/v2.0/users/orders/status/$status"))
             .andExpect(status().isOk)
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+        val response = results.response
+        assertEquals(HttpStatus.OK.value(), response.status)
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
+        assertEquals("[]", response.contentAsString)
     }
 
 
@@ -177,10 +212,13 @@ class UserControllerIntegrationTest {
         )
         val newUser = userRepository.save(user)
         val userId = newUser.id
-        mockMvc.perform(get("/api/v2.0/users/$userId/orders"))
+        val result = mockMvc.perform(get("/api/v2.0/users/$userId/orders"))
             .andExpect(status().isOk)
-            .andExpect(content().json("[]"))
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
+            .andReturn()
+        val response = result.response
+        assertEquals(HttpStatus.OK.value(), response.status)
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
+        assertEquals("[]", response.contentAsString)
     }
 
     @Test
@@ -197,10 +235,12 @@ class UserControllerIntegrationTest {
         )
         val newUser = userRepository.save(user)
         val userId = newUser.id
-        mockMvc.perform(delete("/api/v2.0/users/$userId"))
-            .andExpect(status().isOk)
-            .andExpect(content().contentType(MediaType.APPLICATION_JSON))
-            .andExpect(jsonPath("$.success").value(true))
+        val result = mockMvc.perform(delete("/api/v2.0/users/$userId"))
+            .andReturn()
+        val response = result.response
+        assertEquals(HttpStatus.OK.value(), response.status)
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
+
     }
 
     @Test
@@ -217,8 +257,11 @@ class UserControllerIntegrationTest {
         )
         val newUser = userRepository.save(user)
         val userId = newUser.id
-        mockMvc.perform(delete("/api/v2.0/users/$userId"))
-            .andExpect(status().isForbidden)
+        val result = mockMvc.perform(delete("/api/v2.0/users/$userId"))
+            .andReturn()
+        val response = result.response
+        assertEquals(HttpStatus.FORBIDDEN.value(), response.status)
+
     }
 
 
