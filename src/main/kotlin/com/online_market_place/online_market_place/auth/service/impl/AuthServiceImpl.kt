@@ -76,11 +76,11 @@ class AuthServiceImpl(
     override fun verifyToken(token: String): String {
 
         val user = userRepository.findByVerificationToken(token)
-            ?: throw InvalidVerificationTokenException("The verification token is invalid or has expired")
+
 
 
         if (user.isTokenExpired()) {
-            throw InvalidVerificationTokenException("Verification token has expired")
+            throw InvalidVerificationTokenException()
         }
 
         user.verifyEmail(token)
@@ -96,7 +96,6 @@ class AuthServiceImpl(
         )
         SecurityContextHolder.getContext().authentication = authentication
         val user: UserEntity = userRepository.findByEmail(request.email)
-            ?: throw ResourceNotFoundException("User with these credential , not found")
         val userDetails: UserDetails = authentication.principal as UserDetails
         val jwtToken: String = jwtUtil.generateToken(userDetails)
 

@@ -16,7 +16,6 @@ import com.online_market_place.online_market_place.product.repositories.ProductR
 import com.online_market_place.online_market_place.product.services.ProductService
 import com.online_market_place.online_market_place.user.entities.UserEntity
 import com.online_market_place.online_market_place.user.repositories.UserRepository
-import com.online_market_place.online_market_place.user.services.UserService
 import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
 import java.math.BigDecimal
@@ -26,7 +25,7 @@ class OrderServiceImpl(
     private val orderRepository: OrderRepository,
     private val userRepository: UserRepository,
     private val productRepository: ProductRepository,
-    private val userService: UserService,
+
     private val orderProducer: OrderProducer,
     private val productService: ProductService,
     private val emailService: EmailService
@@ -50,10 +49,7 @@ class OrderServiceImpl(
         return OrderMapper().map(savedOrder)
     }
 
-    private fun getUser(userId: Long): UserEntity {
-        return userRepository.findById(userId)
-            .orElseThrow { ResourceNotFoundException("User not found") }
-    }
+
 
     private fun calculateTotalAmount(
         items: List<OrderItemCreateDTO.Input>,
@@ -109,7 +105,7 @@ class OrderServiceImpl(
         val existingOrder = orderRepository.findById(order.id)
             .orElseThrow { ResourceNotFoundException("Order with ID ${order.id} not found") }
 
-        existingOrder.status = order.status
+        existingOrder.updateOrderStatus(order.status)
         return OrderMapper().mapToStatusOut(orderRepository.save(existingOrder))
     }
 
@@ -156,8 +152,8 @@ class OrderServiceImpl(
                 ?: throw ResourceNotFoundException("Product with ID ${item.itemId} not found")
 
             existingOrder.items.find { it.product.id == item.itemId }?.apply {
-                quantity = item.quantity
-                price = product.price * item.quantity
+                this.updateQuantity(item.quantity)
+                this.updatePrice(product.price * item.quantity)
             } ?: throw ResourceNotFoundException("Item with Product ID ${item.itemId} not found in order")
         }
 

@@ -11,23 +11,28 @@ import com.online_market_place.online_market_place.product.dto.UpdateProductDTO
 import com.online_market_place.online_market_place.product.mappers.ProductMapper
 
 import com.online_market_place.online_market_place.product.repositories.ProductRepository
+import com.online_market_place.online_market_place.test_config.TestConfig
 import mu.KotlinLogging
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.context.annotation.Import
+import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 import org.springframework.security.test.context.support.WithMockUser
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import kotlin.test.assertEquals
 
 
 @ActiveProfiles("test")
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureMockMvc
+@Import(TestConfig::class)
 class ProductControllerIntegrationTest {
 
     val log = KotlinLogging.logger {}
@@ -44,16 +49,13 @@ class ProductControllerIntegrationTest {
     @Autowired
     private lateinit var categoryRepository: CategoryRepository
 
-
-
-
     @Autowired
     lateinit var productRepository: ProductRepository
 
     @BeforeEach
     fun setup() {
-        productRepository.deleteAll()
-        categoryRepository.deleteAll()
+        productRepository.deleteAllPhysically()
+        categoryRepository.deleteAllPhysically()
         categoryService.createCategory(CreateCategoryDTO.Input(name = "Electronics"))
     }
 
@@ -72,21 +74,31 @@ class ProductControllerIntegrationTest {
             imageUrl = null
         )
 
-        mockMvc.perform(post("/api/v2.0/products")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(request)))
-            .andExpect(status().isCreated)
-
+        val result = mockMvc.perform(
+            post("/api/v2.0/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(request))
+        )
+            .andReturn()
+        val response = result.response
+        assertEquals(HttpStatus.CREATED.value(), response.status)
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
     }
 
     @Test
     @WithMockUser(roles = ["SELLER"])
     fun `get all products should return 200`() {
-
-        mockMvc.perform(get("/api/v2.0/products")
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk())  //
+        val result = mockMvc.perform(
+            get("/api/v2.0/products")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk())
             .andExpect(jsonPath("$").isArray)
+            .andReturn()
+
+        val response = result.response
+        assertEquals(HttpStatus.OK.value(), response.status)
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
     }
 
     @Test
@@ -107,19 +119,26 @@ class ProductControllerIntegrationTest {
         val savedProduct =
             productRepository.save(ProductMapper().map(product, categoryRepository.findById(product.categoryId).get()))
         log.info { "Saved product: $savedProduct" }
-        mockMvc.perform(get("/api/v2.0/products/${savedProduct.id}")
-            .contentType(MediaType.APPLICATION_JSON))
+
+        val result = mockMvc.perform(
+            get("/api/v2.0/products/${savedProduct.id}")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
             .andExpect(status().isOk)
             .andExpect(jsonPath("$.name").value("Test Product"))
             .andExpect(jsonPath("$.description").value("A great product"))
             .andExpect(jsonPath("$.price").value(20.0))
             .andExpect(jsonPath("$.stockQuantity").value(100))
+            .andReturn()
+
+        val response = result.response
+        assertEquals(HttpStatus.OK.value(), response.status)
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
     }
 
     @Test
     @WithMockUser(roles = ["SELLER"])
     fun `should update product and return 200`() {
-
         val category = categoryRepository.save(CategoryEntity(name = "Foods"))
         log.info { "Created category with ID: ${category.id}" }
 
@@ -135,7 +154,6 @@ class ProductControllerIntegrationTest {
         val savedProduct =
             productRepository.save(ProductMapper().map(product, categoryRepository.findById(product.categoryId).get()))
 
-
         val updatedRequest = UpdateProductDTO.Input(
             name = "Updated Product",
             description = "Updated description",
@@ -144,22 +162,27 @@ class ProductControllerIntegrationTest {
             featured = true,
             imageUrl = "http://example.com/new-image.jpg",
             categoryId = category.id
-
         )
 
         // Step 3: Make the PUT request to update the product
-        mockMvc.perform(put("/api/v2.0/products/${savedProduct.id}")
-            .contentType(MediaType.APPLICATION_JSON)
-            .content(objectMapper.writeValueAsString(updatedRequest)))
-            .andExpect(status().isOk)  // Expecting HTTP 200
+        val result = mockMvc.perform(
+            put("/api/v2.0/products/${savedProduct.id}")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(updatedRequest))
+        )
+            .andExpect(status().isOk)
             .andExpect(jsonPath("$.name").value("Updated Product"))
             .andExpect(jsonPath("$.description").value("Updated description"))
             .andExpect(jsonPath("$.price").value(15.0))
             .andExpect(jsonPath("$.stockQuantity").value(30))
             .andExpect(jsonPath("$.featured").value(true))
             .andExpect(jsonPath("$.imageUrl").value("http://example.com/new-image.jpg"))
-    }
+            .andReturn()
 
+        val response = result.response
+        assertEquals(HttpStatus.OK.value(), response.status)
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
+    }
 
     @Test
     @WithMockUser(roles = ["SELLER"])
@@ -180,15 +203,20 @@ class ProductControllerIntegrationTest {
             productRepository.save(ProductMapper().map(product, categoryRepository.findById(product.categoryId).get()))
 
         // Step 2: Perform the DELETE request to delete the product
-        mockMvc.perform(delete("/api/v2.0/products/${savedProduct.id}")
-            .contentType(MediaType.APPLICATION_JSON))
-            .andExpect(status().isOk)  // Expecting HTTP 200
+        val result = mockMvc.perform(
+            delete("/api/v2.0/products/${savedProduct.id}")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
+            .andExpect(status().isOk)
             .andExpect(jsonPath("$.message").value("Product with ID ${savedProduct.id} deleted successfully"))
             .andExpect(jsonPath("$.success").value(true))
+            .andReturn()
 
-        // Step 3: Verify the product is deleted (optional, if your repository allows direct queries)
+        val response = result.response
+        assertEquals(HttpStatus.OK.value(), response.status)
+        assertEquals(MediaType.APPLICATION_JSON_VALUE, response.contentType)
+
         val deletedProduct = productRepository.findById(savedProduct.id)
         assert(deletedProduct.isEmpty)
     }
-
 }

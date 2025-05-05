@@ -61,21 +61,26 @@ dependencies {
     annotationProcessor("org.projectlombok:lombok")
 
     //Klogger
-    implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
+	implementation("io.github.microutils:kotlin-logging-jvm:2.0.11")
 
-    // Test
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// Test
+	implementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+
+	testImplementation("org.springframework.boot:spring-boot-starter-test")
 
 	testImplementation("io.mockk:mockk:1.13.5")
 
 	testImplementation("com.ninja-squad:springmockk:4.0.2")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
-    testImplementation("org.springframework.security:spring-security-test")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+	testImplementation("org.springframework.boot:spring-boot-testcontainers")
+	testImplementation("org.testcontainers:postgresql")
+	testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
+	testImplementation("org.testcontainers:junit-jupiter")
+	testImplementation("org.testcontainers:rabbitmq")
 
-    testImplementation("io.mockk:mockk:1.14.0")
-	testImplementation("com.h2database:h2")
+	testImplementation("org.springframework.security:spring-security-test")
+	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
+
+	testImplementation("io.mockk:mockk:1.14.0")
 }
 
 
@@ -95,7 +100,8 @@ tasks.withType<Test> {
 	useJUnitPlatform()
 }
 
-// TODO Make sure we can set this image name manually
+// Allows setting the image name manually via environment variable
 tasks.named<org.springframework.boot.gradle.tasks.bundling.BootBuildImage>("bootBuildImage") {
-	imageName.set("online-market-place:latest")
+	val imageNameFromEnv = System.getenv("BASE_TAG_NAME") ?: "online-market-place:latest"
+	imageName.set(imageNameFromEnv)
 }

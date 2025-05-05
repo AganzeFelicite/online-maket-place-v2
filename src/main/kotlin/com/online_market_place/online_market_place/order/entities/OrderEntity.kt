@@ -35,6 +35,13 @@ data class OrderEntity(
         this.totalAmount = newTotalAmount
     }
 
+    fun updateQuantity(orderItem: OrderItemEntity, newQuantity: Int) {
+        val item = items.find { it.id == orderItem.id }
+        item?.let {
+            it.quantity = newQuantity
+        }
+    }
+
     fun addOrderItem(orderItem: OrderItemEntity) {
         (items as MutableList).add(orderItem)
         orderItem.order = this
