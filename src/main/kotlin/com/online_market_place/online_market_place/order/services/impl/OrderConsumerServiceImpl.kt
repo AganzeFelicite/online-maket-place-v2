@@ -24,6 +24,8 @@ class OrderConsumerServiceImpl(
         try {
             val order = orderService.getOrderById(message.orderId)
 
+            var totalOrderAmount = 0.0
+
             for (item in message.items) {
                 val product = productService.getProductById(item.productId)
 
@@ -34,9 +36,14 @@ class OrderConsumerServiceImpl(
                     )
                     return
                 }
+
                 productService.updateProductStock(item.productId, item.quantity)
 
+                val itemTotal = product.price * item.quantity
+                totalOrderAmount += itemTotal
             }
+
+            orderService.updateOrderTotal(order = order, totalAmount = totalOrderAmount)
 
             orderService.confirmedProduct(order = order, message = message)
 
@@ -46,7 +53,6 @@ class OrderConsumerServiceImpl(
                 message = message,
                 reason = "An error occurred while processing the order: ${e.message}"
             )
-
         }
     }
 

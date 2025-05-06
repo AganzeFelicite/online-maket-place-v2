@@ -64,7 +64,7 @@ class AuthControllerIntergrationTest {
             username = "testuser",
             password = passwordEncoder.encode(password),
             enabled = true,
-            role = setOf(UserRole.CUSTOMER),
+            roles = mutableListOf(UserRole.CUSTOMER),
             verificationToken = "someVerificationToken",
             tokenExpiryDate = LocalDateTime.now().plusHours(1),
         )
@@ -76,7 +76,7 @@ class AuthControllerIntergrationTest {
             true,
             true,
             true,
-            user.role.map { org.springframework.security.core.GrantedAuthority { it.name } }
+            user.roles.map { org.springframework.security.core.GrantedAuthority { it.name } }
         )
 
 

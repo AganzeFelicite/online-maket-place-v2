@@ -8,14 +8,13 @@ import com.online_market_place.online_market_place.order.dto.OrderUpdateDTO
 import com.online_market_place.online_market_place.order.services.OrderService
 import com.online_market_place.online_market_place.product.enums.ProductOrderStatus
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import jakarta.validation.Valid
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v2.0/orders")
-@SecurityRequirement(name = "bearerAuth") // this is just for swagger
+
 class OrderController(
     private val orderService: OrderService
 ) {

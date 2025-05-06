@@ -83,7 +83,7 @@ class UserControllerIntegrationTest {
             username = "testuser",
             password = "Test@123",
             enabled = false,
-            role = setOf(UserRole.CUSTOMER),
+            roles = mutableListOf(UserRole.CUSTOMER),
             verificationToken = null,
             tokenExpiryDate = null
         )
@@ -120,7 +120,7 @@ class UserControllerIntegrationTest {
             username = "testuser",
             password = "Test@123",
             enabled = false,
-            role = setOf(UserRole.CUSTOMER),
+            roles = mutableListOf(UserRole.CUSTOMER),
             verificationToken = null,
             tokenExpiryDate = null
         )
@@ -131,7 +131,7 @@ class UserControllerIntegrationTest {
                 username = "updatedUser",
                 password = "NewPassword@123",
                 enabled = true,
-                role = setOf(UserRole.CUSTOMER, UserRole.SELLER)
+                role = mutableListOf(UserRole.CUSTOMER, UserRole.SELLER)
             )
         }
 
@@ -157,7 +157,7 @@ class UserControllerIntegrationTest {
             username = "testuser",
             password = "Test@123",
             enabled = true,
-            role = setOf(UserRole.CUSTOMER),
+            roles = mutableListOf(UserRole.CUSTOMER),
             verificationToken = null,
             tokenExpiryDate = null
         )
@@ -181,7 +181,7 @@ class UserControllerIntegrationTest {
             username = "testuser",
             password = "Test@123",
             enabled = true,
-            role = setOf(UserRole.CUSTOMER),
+            roles = mutableListOf(UserRole.CUSTOMER),
             verificationToken = null,
             tokenExpiryDate = null
         )
@@ -206,7 +206,7 @@ class UserControllerIntegrationTest {
             username = "testuser",
             password = "Test@123",
             enabled = false,
-            role = setOf(UserRole.CUSTOMER),
+            roles = mutableListOf(UserRole.CUSTOMER),
             verificationToken = null,
             tokenExpiryDate = null
         )
@@ -229,7 +229,7 @@ class UserControllerIntegrationTest {
             username = "testuser",
             password = "Test@123",
             enabled = false,
-            role = setOf(UserRole.CUSTOMER),
+            roles = mutableListOf(UserRole.CUSTOMER),
             verificationToken = null,
             tokenExpiryDate = null
         )
@@ -251,7 +251,7 @@ class UserControllerIntegrationTest {
             username = "testuser",
             password = "Test@123",
             enabled = false,
-            role = setOf(UserRole.CUSTOMER),
+            roles = mutableListOf(UserRole.CUSTOMER),
             verificationToken = null,
             tokenExpiryDate = null
         )

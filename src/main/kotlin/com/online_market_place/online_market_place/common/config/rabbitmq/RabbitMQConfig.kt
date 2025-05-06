@@ -50,6 +50,7 @@ class RabbitMQConfig {
     fun emailBinding(emailQueue: Queue, ordersExchange: TopicExchange): Binding =
         BindingBuilder.bind(emailQueue).to(ordersExchange).with(ROUTING_KEY_EMAIL)
 
+
     @Bean
     fun messageConverter(): Jackson2JsonMessageConverter = Jackson2JsonMessageConverter()
 

@@ -11,14 +11,14 @@ data class UserResponse(
     val id: Long,
     val email: String,
     val username: String,
-    val role: Set<UserRole>
+    val role: List<UserRole>
 ) : BaseUserResponse
 
 data class UserDetailedResponse(
     val id: Long,
     val email: String,
     val username: String,
-    val role: Set<UserRole>,
+    val role: List<UserRole>,
     val orders: List<OrderCreateDTO.Output>,
     val reviews: List<ReviewResponse>,
     val createdAt: LocalDateTime,

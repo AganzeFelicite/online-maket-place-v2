@@ -18,7 +18,6 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Configuration
 @EnableWebSecurity
 @EnableMethodSecurity(prePostEnabled = true)
-@Suppress("unused") // Suppress unused warning for the class since this is a configuration class
 class SecurityConfig {
     @Bean
     fun passwordEncoder(): PasswordEncoder {

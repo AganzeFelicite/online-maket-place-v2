@@ -37,7 +37,7 @@ class UserServiceImpl(
         request.username?.let { currentUser.username = it }
         request.password?.let { currentUser.password = passwordEncoder.encode(it) }
         request.enabled?.let { currentUser.enabled = it }
-        request.role?.let { currentUser.role = it }
+        request.role?.let { currentUser.roles = it }
 
         return UserMapper().map(userRepository.save(currentUser))
     }
@@ -76,6 +76,6 @@ class UserServiceImpl(
         val email = org.springframework.security.core.context.SecurityContextHolder.getContext().authentication.name
             ?: throw ResourceNotFoundException("Authenticated user not found")
         return userRepository.findByEmail(email)
-            ?: throw ResourceNotFoundException("Authenticated user not found")
+
     }
 }

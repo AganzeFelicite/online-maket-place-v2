@@ -20,11 +20,13 @@ class NotificationServiceImpl @Autowired constructor(
     @Transactional
     override fun createNotification(request: CreateNotificationDTO.Input): CreateNotificationDTO.Output {
         val notification = NotificationEntity(
-            title = request.title,
-            message = request.message,
-            recipient = request.recipient,
-            type = request.type
+            request.title,
+            request.message,
+            request.recipient,
+            request.type
+
         )
+
         val savedNotification = notificationRepository.save(notification)
         return NotificationMapper().map(savedNotification)
     }

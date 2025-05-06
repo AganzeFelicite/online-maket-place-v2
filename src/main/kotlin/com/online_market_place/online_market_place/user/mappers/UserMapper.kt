@@ -16,14 +16,14 @@ class UserMapper {
                 id = userEntity.id,
                 email = userEntity.email,
                 username = userEntity.username,
-                role = userEntity.role
+                role = userEntity.roles
             )
         } else {
             UserDetailedResponse(
                 id = userEntity.id,
                 email = userEntity.email,
                 username = userEntity.username,
-                role = userEntity.role,
+                role = userEntity.roles,
                 orders = userEntity.orders.map { OrderMapper().map(it) },
                 reviews = userEntity.reviews?.map { it.toReviewResponse() } ?: emptyList(),
                 createdAt = userEntity.createdAt,

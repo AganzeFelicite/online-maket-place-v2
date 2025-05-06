@@ -16,8 +16,8 @@ import com.online_market_place.online_market_place.product.repositories.ProductR
 import com.online_market_place.online_market_place.product.services.ProductService
 import com.online_market_place.online_market_place.user.entities.UserEntity
 import com.online_market_place.online_market_place.user.repositories.UserRepository
-import jakarta.transaction.Transactional
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 
 @Service
@@ -101,6 +101,7 @@ class OrderServiceImpl(
         return orders.map { OrderMapper().map(it) }
     }
 
+    @Transactional
     override fun updateOrderStatus(order: OrderStatusUpdateDTO.Input): OrderStatusUpdateDTO.Output {
         val existingOrder = orderRepository.findById(order.id)
             .orElseThrow { ResourceNotFoundException("Order with ID ${order.id} not found") }
@@ -137,6 +138,7 @@ class OrderServiceImpl(
         return orderRepository.findAllByStatus(enumStatus).map { OrderMapper().map(it) }
     }
 
+    @Transactional
     override fun updateOrder(order: OrderUpdateDTO.Input): OrderCreateDTO.Output {
         val existingOrder = orderRepository.findById(order.id)
             .orElseThrow { ResourceNotFoundException("Order with ID ${order.id} not found") }
@@ -173,7 +175,7 @@ class OrderServiceImpl(
             .orElseThrow { ResourceNotFoundException("Order with ID $order.id not found") }
         savedOrder.fail()
         orderRepository.save(savedOrder)
-        emailService.publishEmailNotificationEvent(
+        orderProducer.publishEmailNotificationEvent(
             EmailMessage(
                 to = message.userEmail,
                 subject = "Order Failed",
@@ -188,13 +190,21 @@ class OrderServiceImpl(
             .orElseThrow { ResourceNotFoundException("Order with ID $order.id not found") }
         savedOrder.confirm()
         orderRepository.save(savedOrder)
-        emailService.publishEmailNotificationEvent(
+        orderProducer.publishEmailNotificationEvent(
             EmailMessage(
                 to = message.userEmail,
                 subject = "Order Confirmed",
                 body = "Your order has been confirmed. Order ID: ${message.orderId}"
             )
         )
+    }
+
+    @Transactional
+    override fun updateOrderTotal(order: OrderCreateDTO.Output, totalAmount: Double) {
+        val savedOrder = orderRepository.findById(order.id)
+            .orElseThrow { ResourceNotFoundException("Order with ID $order.id not found") }
+        savedOrder.upDateTotalAmount(totalAmount)
+        orderRepository.save(savedOrder)
     }
 
 }

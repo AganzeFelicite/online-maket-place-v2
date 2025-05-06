@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 @Configuration
-@Suppress("unused") // Suppress unused warning for the class since this is a configuration class
 class SwaggerConfig {
 
     @Bean

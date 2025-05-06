@@ -32,13 +32,16 @@ data class OrderEntity(
     }
 
 
-
     fun confirm() {
         this.status = ProductOrderStatus.CONFIRMED
     }
 
     fun fail() {
         this.status = ProductOrderStatus.FAILED
+    }
+
+    fun upDateTotalAmount(amount: Double) {
+        this.totalAmount = amount
     }
 }
 

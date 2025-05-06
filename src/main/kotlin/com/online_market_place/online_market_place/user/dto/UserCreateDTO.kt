@@ -27,7 +27,7 @@ sealed class UserCreateDTO {
         val password: String,
 
         @field:NotEmpty(message = "At least one role is required")
-        val role: Set<UserRole>,
+        val role: MutableList<UserRole>,
     )
 
     data class Output(

@@ -29,7 +29,7 @@ sealed class UserUpdateDTO {
         val enabled: Boolean? = null,
 
         @field:NotEmpty(message = "At least one role must be specified when updating roles")
-        val role: Set<UserRole>? = null,
+        val role: MutableList<UserRole>? = null,
 
 
         )

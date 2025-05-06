@@ -7,14 +7,13 @@ import com.online_market_place.online_market_place.common.ApiResponse
 import com.online_market_place.online_market_place.common.annotations.IsAdminOrSeller
 import com.online_market_place.online_market_place.common.annotations.IsAdminOrSellerOrCustomer
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v2.0/categories")
-@SecurityRequirement(name = "bearerAuth")
+
 class CategoryController(
     private val categoryService: CategoryService
 ) {

@@ -41,7 +41,7 @@ class OnlineMarketPlaceApplicationTests {
             postgresContainer.start()
         }
 
-        // Removed MailHog check
+
     }
 
     @Test

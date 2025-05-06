@@ -1,6 +1,5 @@
 package com.online_market_place.online_market_place.notification.services.impl
 
-import com.online_market_place.online_market_place.common.config.rabbitmq.RabbitMQConfig
 import com.online_market_place.online_market_place.notification.dto.EmailMessage
 import com.online_market_place.online_market_place.notification.services.EmailService
 import org.springframework.amqp.rabbit.core.RabbitTemplate
@@ -28,14 +27,13 @@ class EmailServiceImpl(
 
     }
 
-
-    override fun publishEmailNotificationEvent(message: EmailMessage) {
-        rabbitTemplate.convertAndSend(
-            RabbitMQConfig.EXCHANGE_ORDERS,
-            RabbitMQConfig.ROUTING_KEY_EMAIL,
-            message
-
-        )
+    override fun sendEmail(message: EmailMessage) {
+        val mail = SimpleMailMessage()
+        mail.setTo(message.to)
+        mail.subject = message.subject
+        mail.text = message.body
+        mailSender.send(mail)
     }
+
 
 }

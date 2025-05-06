@@ -47,14 +47,14 @@ class CategoryMapper {
 
     fun map(categoryRequest: CreateCategoryDTO.Input): CategoryEntity {
         return CategoryEntity(
-            name = categoryRequest.name
+         categoryRequest.name
         )
     }
 
     fun mapToUpdateResponse(entity: CategoryEntity): UpdateCategoryDTO.Output {
         return UpdateCategoryDTO.Output(
             id = entity.id,
-            name = entity.name
+            name = entity.name,
         )
     }
 }

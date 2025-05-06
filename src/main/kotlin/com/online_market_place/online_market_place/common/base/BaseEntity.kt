@@ -4,21 +4,27 @@ import jakarta.persistence.*
 import java.time.LocalDateTime
 
 @MappedSuperclass
-abstract class BaseEntity(
+class BaseEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val id: Long = 0L,
+    var id: Long = 0
+        protected set
 
     @Column(name = "created_at", nullable = false, updatable = false)
-    val createdAt: LocalDateTime = LocalDateTime.now(),
+    @Temporal(TemporalType.TIMESTAMP)
+    var createdAt: LocalDateTime = LocalDateTime.now()
+        protected set
 
     @Column(name = "updated_at", nullable = false)
-    var updatedAt: LocalDateTime = LocalDateTime.now(),
+    @Temporal(TemporalType.TIMESTAMP)
+    var updatedAt: LocalDateTime = LocalDateTime.now()
+        protected set
 
     @Column(name = "deleted_at")
+    @Temporal(TemporalType.TIMESTAMP)
     var deletedAt: LocalDateTime? = null
-) {
-
+        protected set
 
     @PreUpdate
     fun preUpdate() {

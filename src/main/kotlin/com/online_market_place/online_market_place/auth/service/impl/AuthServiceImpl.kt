@@ -65,7 +65,7 @@ class AuthServiceImpl(
             username = request.username,
             password = passwordEncoder.encode(request.password),
             enabled = false,
-            role = request.role,
+            roles = request.role,
             verificationToken = token,
             tokenExpiryDate = LocalDateTime.now().plusHours(24)
         )

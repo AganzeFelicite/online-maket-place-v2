@@ -27,4 +27,6 @@ interface OrderService {
 
     fun confirmedProduct(order: OrderCreateDTO.Output, message: OrderMessage)
 
+    fun updateOrderTotal(order: OrderCreateDTO.Output, totalAmount: Double)
+
 }

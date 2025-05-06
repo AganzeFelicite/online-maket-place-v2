@@ -9,6 +9,7 @@ import org.hibernate.annotations.SQLDelete
 import org.hibernate.annotations.SQLRestriction
 import java.time.LocalDateTime
 
+
 @Entity
 @Table(name = "users")
 @SQLDelete(sql = "UPDATE users SET deleted_at = now() WHERE id=?")
@@ -23,8 +24,18 @@ data class UserEntity(
 
     var enabled: Boolean = false,
 
+    @ElementCollection(fetch = FetchType.EAGER)
     @Enumerated(EnumType.STRING)
-    var role: Set<UserRole> = setOf(UserRole.CUSTOMER),
+    @CollectionTable(
+        name = "user_roles",
+        joinColumns = [JoinColumn(name = "user_id")],
+        foreignKey = ForeignKey(
+            name = "fk_user_roles",
+            foreignKeyDefinition = "FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE"
+        )
+    )
+    var roles: MutableList<UserRole> = mutableListOf(),
+
 
     @OneToMany(mappedBy = "user", cascade = [CascadeType.PERSIST, CascadeType.MERGE])
     val orders: List<OrderEntity> = mutableListOf(),
@@ -42,7 +53,7 @@ data class UserEntity(
         username: String? = null,
         password: String? = null,
         enabled: Boolean? = null,
-        role: Set<UserRole>? = null,
+        role: MutableList<UserRole>? = null,
         verificationToken: String? = null,
         tokenExpiryDate: LocalDateTime? = null
     ) {
@@ -50,7 +61,7 @@ data class UserEntity(
         username?.let { this.username = it }
         password?.let { this.password = it }
         enabled?.let { this.enabled = it }
-        role?.let { this.role = it }
+        role?.let { this.roles = it }
         verificationToken?.let { this.verificationToken = it }
         tokenExpiryDate?.let { this.tokenExpiryDate = it }
     }

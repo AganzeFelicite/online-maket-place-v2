@@ -7,13 +7,11 @@ import com.online_market_place.online_market_place.order.dto.OrderCreateDTO
 import com.online_market_place.online_market_place.user.dto.UserUpdateDTO
 import com.online_market_place.online_market_place.user.services.UserService
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v2.0/users")
-@SecurityRequirement(name = "bearerAuth")
 class UserController(
     private val userService: UserService
 ) {
